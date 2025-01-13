@@ -15,6 +15,7 @@ class Loan extends Model
      * @var array
      */
     protected $fillable = [
+        'loan_custom_id',
         'customer_id',
         'amount',
         'loan_approved_date',
@@ -28,6 +29,7 @@ class Loan extends Model
         'is_approved',
         'approved_by',
     ];
+
 
     /**
      * The relationships to always load by default.

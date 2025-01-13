@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Loan Management System') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <!-- External CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
-    
+
     <!-- External JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -21,13 +21,25 @@
     <style>
         @media (max-width: 768px) {
             .nav-content {
+                display: none;
                 flex-direction: column;
                 gap: 1rem;
             }
+
             .nav-title {
-                order: -1;
-                width: 100%;
                 text-align: center;
+            }
+
+            .menu-button {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
             }
         }
     </style>
@@ -36,6 +48,15 @@
     <!-- Navigation -->
     <nav class="p-4 text-white sticky top-0 z-50" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
         <div class="container mx-auto px-4">
+            <!-- Menu Button for Mobile -->
+            <div class="menu-button">
+                <h1 class="text-xl md:text-2xl font-bold nav-title">Daily Collection Management</h1>
+                <button id="menu-toggle" 
+                        class="menu-toggle p-2 rounded-md bg-white text-black focus:outline-none">
+                    &#9776;
+                </button>
+            </div>
+
             <!-- Nav Content Wrapper -->
             <div class="nav-content flex flex-row justify-between items-center gap-4">
                 <!-- Left Side - Home Link -->
@@ -43,11 +64,6 @@
                     <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-2 hover:bg-white/10 rounded-lg transition">
                         <span class="text-lg font-semibold">Home</span>
                     </a>
-                </div>
-
-                <!-- Center - Title -->
-                <div class="nav-title flex-grow flex justify-center">
-                    <h1 class="text-xl md:text-2xl font-bold">Daily Collection Management</h1>
                 </div>
 
                 <!-- Right Side - User Menu -->
@@ -96,10 +112,17 @@
         // Toggle user menu
         const userMenu = document.getElementById('user-menu');
         const dropdown = document.getElementById('dropdown');
+        const menuToggle = document.getElementById('menu-toggle');
+        const navContent = document.querySelector('.nav-content');
 
         userMenu?.addEventListener('click', (e) => {
             e.stopPropagation();
             dropdown.classList.toggle('hidden');
+        });
+
+        // Toggle navigation menu for mobile
+        menuToggle?.addEventListener('click', () => {
+            navContent.classList.toggle('hidden');
         });
 
         // Close dropdown when clicking outside
@@ -113,6 +136,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 dropdown.classList.add('hidden');
+                navContent.classList.add('hidden');
             }
         });
     </script>

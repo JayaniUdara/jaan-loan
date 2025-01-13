@@ -20,7 +20,7 @@
 <div class="max-w-4xl mx-auto py-8">
     <h1 class="text-2xl font-bold mb-4">Loan Application Form</h1>
 
-    <form method="POST" action="{{ route('loans.store') }}">
+    <form method="POST" action="{{ route('loans.store.past') }}">
         @csrf
 
         <!-- Loan Details -->
@@ -36,17 +36,17 @@
                 >
             </div>
  <!-- Customer ID -->
- <div class="mb-4">
-    <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
+            <div class="mb-4">
+                <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
+           
 
-
-    <select id="customer_id" name="customer_id" class="mt-1 block w-full border-gray-300 rounded-md">
-        <option value="">Select Customer</option>
-        @foreach($customers as $customer)
-            <option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
-        @endforeach
-    </select>
-</div>
+                <select id="customer_id" name="customer_id" class="mt-1 block w-full border-gray-300 rounded-md">
+                    <option value="">Select Customer</option>
+                    @foreach($customers as $customer)
+                        <option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
+                    @endforeach
+                </select>
+            </div>
    <!-- Loan Amount -->
    <div class="mb-4">
     <label for="amount" class="block text-sm font-medium">Loan Amount</label>
@@ -84,6 +84,50 @@
         readonly>
 </div>
 
+   <!-- remaining_installments Amount -->
+   <div class="mb-4">
+    <label for="remaining_installments" class="block text-sm font-medium">Remianing instalments (Number of remaining installments)</label>
+    <input type="number" step="0.01" id="remaining_installments" name="remaining_installments" class="mt-1 block w-full border-gray-300 rounded-md" required>
+</div>
+
+   <!-- remaining_installments Amount -->
+   <div class="mb-4">
+    <label for="outstanding_balance" class="block text-sm font-medium">Remaining balance</label>
+    <input type="number" step="0.01" id="outstanding_balance" name="outstanding_balance" class="mt-1 block w-full border-gray-300 rounded-md" required>
+</div>
+       <!-- Loan Approved Date -->
+       <div class="mb-4">
+        <label for="loan_approved_date" class="block text-sm font-medium">Loan Approved Date</label>
+        <input 
+            type="date" 
+            id="loan_approved_date" 
+            name="loan_approved_date" 
+            class="mt-1 block w-full border-gray-300 rounded-md">
+    </div>
+
+    <!-- Loan End Date -->
+    <div class="mb-4">
+        <label for="loan_end_date" class="block text-sm font-medium">Loan End Date</label>
+        <input 
+            type="date" 
+            id="loan_end_date" 
+            name="loan_end_date" 
+            class="mt-1 block w-full border-gray-300 rounded-md">
+    </div>
+
+    <!-- Approved By -->
+
+     <div class="mb-4">
+        <label for="approved_by" class="block text-sm font-medium">Approved User ID</label>
+   
+
+        <select id="approved_by" name="approved_by" class="mt-1 block w-full border-gray-300 rounded-md">
+            <option value="">Select User</option>
+            @foreach($users as $user)
+                <option value="{{ $user->id }}">{{ $user->id }} - {{ $user->name }}</option>
+            @endforeach
+        </select>
+    </div>
         <!-- Guarantors Details -->
         <h2 class="text-lg font-bold mt-6 mb-4">Guarantors</h2>
         <div id="guarantors-container">

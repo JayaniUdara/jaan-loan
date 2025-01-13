@@ -10,7 +10,7 @@ class CreateLoansTable extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
-
+            $table->string('loan_custom_id')->nullable();
             // Foreign key for the customer
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
 

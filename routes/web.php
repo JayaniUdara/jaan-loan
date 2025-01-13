@@ -31,7 +31,13 @@ Route::middleware(['auth'])->group(function () {
          //loan handling
          Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
          Route::get('/loans/create', [LoanController::class, 'create'])->name('loans.create');
+
+         Route::get('/loans/create/past', [LoanController::class, 'createPast'])->name('loans.create.past');
+
+
          Route::post('/loans/store', [LoanController::class, 'store'])->name('loans.store');
+         Route::post('/loans/store/past', [LoanController::class, 'storePast'])->name('loans.store.past');
+
          Route::patch('/loans/{id}/approve', [LoanController::class, 'updateApprove'])->name('loans.approve');
          Route::get('/loans/{loan}', [LoanController::class, 'show'])->name('loans.show');
          Route::get('/loans/{loan}/edit', [LoanController::class, 'edit'])->name('loans.edit');
@@ -44,8 +50,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/reports', [DashboardController::class, 'reports'])->name('reports');
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    
 
+        Route::get('/daily-collections/past', [DailyCollectionController::class, 'createPast'])->name('daily-collections.create.past');
+        Route::post('/daily-collections/store/past', [DailyCollectionController::class, 'storePast'])->name('daily_collections.storePast');
+
+       
         //collector management
         Route::get('/daily-collections', [DailyCollectionController::class, 'index'])->name('daily-collections.index');
         Route::post('/daily-collections/mark', [DailyCollectionController::class, 'markPayment'])->name('daily-collections.mark');

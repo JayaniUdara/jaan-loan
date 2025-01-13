@@ -183,10 +183,14 @@
    
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold">Loans</h2>
- 
-            <a href="{{ route('loans.create') }}" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+            <div class="flex justify-right items-right mb-4">
+            <a href="{{ route('loans.create.past') }}" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+                Add Past Record
+            </a>
+            <a href="{{ route('loans.create') }}" class="text-white px-4 py-2 rounded-md ml-3" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
                 Add New Record
             </a>
+            </div>
         </div>
 
 <!-- Filters -->
