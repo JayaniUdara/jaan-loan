@@ -1,0 +1,208 @@
+<?php
+namespace App\Http\Controllers;
+
+use App\Models\Loan;
+use App\Models\Guarantor;
+use App\Models\Customer;
+use App\Models\User;
+use App\Models\DailyCollection;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+
+class LoanController extends Controller
+{
+    /**
+     * Display a listing of loans.
+     */
+    public function index()
+    {
+        $loans = Loan::with('customer', 'approvedBy', 'guarantors')->paginate(10); // Eager load relationships
+        return view('loans.index', compact('loans'));
+    }
+
+    /**
+     * Show the form for creating a new loan.
+     */
+    public function create()
+    {
+        $customers = Customer::all(); // Retrieve all customers for selection
+        return view('loans.create', compact('customers'));
+    }
+
+    /**
+     * Store a new loan with guarantors in storage.
+     */
+
+     public function store(Request $request)
+    { 
+        // Validate the incoming data
+        $validatedData = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'amount' => 'required|numeric|min:0',
+            'interest_rate' => 'required|numeric|min:0',
+            'installment_duration' => 'required|integer|min:1',
+            'total_installments' => 'required|integer|min:1',
+            'guarantors.*.name' => 'required|string|max:255',
+            'guarantors.*.contact' => 'required|string|max:255',
+            'guarantors.*.address' => 'required|string|max:255',
+            'guarantors.*.national_id' => 'nullable|string|max:255',
+            'guarantors.*.relationship' => 'nullable|string|max:255',
+            'guarantors.*.date_of_birth' => 'nullable|date',
+            'guarantors.*.occupation' => 'nullable|string|max:255',
+            'guarantors.*.annual_income' => 'nullable|numeric|min:0',
+            'guarantors.*.additional_notes' => 'nullable|string|max:1000',
+        ], [
+            'customer_id.required' => 'The Customer ID is required.',
+            'amount.required' => 'The loan amount is required.',
+            'interest_rate.required' => 'The interest rate is required.',
+            'installment_duration.required' => 'Installment duration is required.',
+            'total_installments.required' => 'Total installments are required.',
+            'guarantors.*.name.required' => 'Guarantor name is required.',
+            'guarantors.*.contact.required' => 'Guarantor contact is required.',
+            'guarantors.*.address.required' => 'Guarantor address is required.',
+        ]);
+   
+        try {
+            // Create the loan
+            $loan = Loan::create([
+                'customer_id' => $validatedData['customer_id'],
+                'amount' => $validatedData['amount'],
+                'interest_rate' => $validatedData['interest_rate'],
+                'installment_duration' => $validatedData['installment_duration'],
+                'total_installments' => $validatedData['total_installments'],
+                'remaining_installments' => $validatedData['total_installments'],
+                'outstanding_balance' => $validatedData['amount'], // Default to full amount
+            ]);
+
+            // Loop through each guarantor and attach to the loan
+            foreach ($validatedData['guarantors'] as $guarantorData) {
+                $loan->guarantors()->create([
+                    'name' => $guarantorData['name'],
+                    'contact' => $guarantorData['contact'],
+                    'address' => $guarantorData['address'],
+                    'national_id' => $guarantorData['national_id'] ?? null,
+                    'relationship' => $guarantorData['relationship'] ?? null,
+                    'date_of_birth' => $guarantorData['date_of_birth'] ?? null,
+                    'occupation' => $guarantorData['occupation'] ?? null,
+                    'annual_income' => $guarantorData['annual_income'] ?? null,
+                    'additional_notes' => $guarantorData['additional_notes'] ?? null,
+                ]);
+            }
+
+            return redirect()->route('loans.index')->with('success', 'Loan and guarantors added successfully!');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return redirect()->back()->withInput()->withErrors(['error' => 'An unexpected error occurred. Please try again.']);
+        }
+    }
+
+    /**
+     * Show the form for editing a loan.
+     */
+    public function edit($id)
+    {
+        $loan = Loan::with('guarantors')->findOrFail($id);
+        $customers = Customer::all(); 
+        $users = User::all();
+        return view('loans.edit', compact('loan', 'customers','users'));
+    }
+
+    /**
+     * Update the specified loan and its guarantors.
+     */
+    public function update(Request $request, $id)
+    {
+        $loan = Loan::findOrFail($id);
+
+        $request->validate([
+            'amount' => 'required|numeric',
+            'loan_approved_date' => 'nullable|date',
+            'loan_end_date' => 'nullable|date',
+            'outstanding_balance' => 'required|numeric',
+            'interest_rate' => 'required|numeric',
+            'installment_duration' => 'required|integer',
+            'total_installments' => 'required|integer',
+            'remaining_installments' => 'required|integer',
+            'status' => 'required|in:pending,approved',
+            'approved_by' => 'nullable|string',
+            'guarantors.*.name' => 'required|string',
+            'guarantors.*.contact' => 'required|string',
+            'guarantors.*.address' => 'required|string',
+        ]);
+
+        // Update loan
+        $loan->update($request->except('guarantors'));
+
+        // Update or recreate guarantors
+        $loan->guarantors()->delete(); // Delete existing guarantors
+        if ($request->has('guarantors')) {
+            foreach ($request->guarantors as $guarantor) {
+                $loan->guarantors()->create($guarantor);
+            }
+        }
+
+        return redirect()->route('loans.index')->with('success', 'Loan updated successfully!');
+    }
+
+    /**
+     * Approve a loan.
+     */
+    public function updateApprove(Request $request, $id)
+    {
+        $loan = Loan::findOrFail($id);
+        
+        try {
+            // Update loan status
+            $loan->update([
+                'loan_approved_date' => now(),
+                'is_approved' => true,
+                'approved_by' => auth()->id(),
+            ]);
+            
+            // Generate collection dates
+            $total = $loan->total_installments;
+            $startDate = Carbon::parse($loan->loan_approved_date)->startOfDay();
+            $totalAmount = $loan->amount;
+            $dailyInterest = $totalAmount * $loan->interest_rate / 36000;
+            $remainingDays = ($loan->installment_duration + 1) * $loan->total_installments;
+            $totalInterest = $dailyInterest * $remainingDays;
+            $installmentAmount =  ($totalAmount + $totalInterest)/$loan->total_installments;
+    
+            
+            // Create collection records for each date
+            for ($i = 1; $i <= $total; $i++) {
+                DailyCollection::create([
+                    'loan_id' => $loan->id,
+                    'user_id' => auth()->id(),
+                    'customer_id' => $loan->customer_id,
+                    'amount_collected' => $installmentAmount, 
+                    'status' => 'pending',
+                    'collection_date' => $startDate->copy()->addDays($i * 2),
+                    'notes' => 'null'
+                ]);
+            }
+            
+            
+            return redirect()
+                ->route('loans.index')
+                ->with('success', 'Loan approved successfully and collection schedule created!');
+                
+        } catch (\Exception $e) {
+            
+            return redirect()
+                ->route('loans.index')
+                ->with('error', 'Failed to approve loan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove a loan and its guarantors.
+     */
+    public function destroy($id)
+    {
+        $loan = Loan::findOrFail($id);
+        $loan->delete(); // Cascading delete will remove guarantors
+
+        return redirect()->route('loans.index')->with('success', 'Loan deleted successfully!');
+    }
+}
