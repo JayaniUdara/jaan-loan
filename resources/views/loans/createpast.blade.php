@@ -403,6 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Add event listeners for minimize/remove buttons
           guarantorTemplate.querySelector('.remove-btn').addEventListener('click', () => {
               guarantorTemplate.remove();
+              guarantorIndex--;
           });
           
           guarantorTemplate.querySelector('.minimize-btn').addEventListener('click', (e) => {
@@ -426,5 +427,134 @@ document.addEventListener('DOMContentLoaded', () => {
   });
       </script>
 
+@push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const amountInput = document.getElementById('amount');
+        const totalWithInterestInput = document.getElementById('total_with_interest');
+        const installmentDurationSelect = document.getElementById('installment_duration');
+        const installmentAmountInput = document.getElementById('installment_amount');
+
+        const calculateTotalWithInterest = (amount) => {
+            const interestRate = 0.10; // 10% per month
+            const months = 2; // 2 months
+            return amount + (amount * interestRate * months);
+        };
+
+        const calculateInstallmentAmount = (total, duration) => {
+            if (duration === 'daily') {
+                return total / 60; // 60 days
+            } else if (duration === 'weekly') {
+                return total / 8; // 8 weeks
+            }
+            return 0;
+        };
+
+        amountInput.addEventListener('input', () => {
+            const amount = parseFloat(amountInput.value) || 0;
+            const totalWithInterest = calculateTotalWithInterest(amount);
+            totalWithInterestInput.value = totalWithInterest.toFixed(2);
+
+            // Update installment amount based on selected duration
+            const duration = installmentDurationSelect.value;
+            const installmentAmount = calculateInstallmentAmount(totalWithInterest, duration);
+            installmentAmountInput.value = installmentAmount.toFixed(2);
+        });
+
+        installmentDurationSelect.addEventListener('change', () => {
+            const totalWithInterest = parseFloat(totalWithInterestInput.value) || 0;
+            const duration = installmentDurationSelect.value;
+            const installmentAmount = calculateInstallmentAmount(totalWithInterest, duration);
+            installmentAmountInput.value = installmentAmount.toFixed(2);
+        });
+
+
+
+
+    // Add event listeners for the default guarantor
+    const defaultGuarantor = document.querySelector('.guarantor-item');
+    const minimizeBtn = defaultGuarantor.querySelector('.minimize-btn');
+    const removeBtn = defaultGuarantor.querySelector('.remove-btn');
+
+    minimizeBtn.addEventListener('click', (e) => {
+        const details = defaultGuarantor.querySelector('.guarantor-details');
+        if (details.style.display === 'none') {
+            details.style.display = 'block';
+            e.target.innerText = 'Minimize';
+        } else {
+            details.style.display = 'none';
+            e.target.innerText = 'Expand';
+        }
+    });
+
+    removeBtn.addEventListener('click', () => {
+        defaultGuarantor.remove();
+    });
+});
+
+
+$(document).ready(function() {
+    // Initialize Select2 for existing select elements
+    initializeSelect2();
+
+    // Function to initialize Select2
+    function initializeSelect2() {
+        $('.searchable').select2({
+            placeholder: 'Type to search...',
+            allowClear: true,
+            width: '100%',
+            minimumInputLength: 1,
+            templateResult: formatResult,
+            templateSelection: formatSelection
+        });
+    }
+
+    // Custom formatting for dropdown items
+    function formatResult(item) {
+        if (!item.id) return item.text;
+        if (item.element.parentElement.id === 'customer_id') {
+            return $(`<span>ID: ${item.id} - ${item.text}</span>`);
+        } else {
+            // For guarantor NIC selects
+            return $(`<span>${item.id} - ${item.text.split(' ').slice(1).join(' ')}</span>`);
+        }
+    }
+
+    // Custom formatting for selected item
+    function formatSelection(item) {
+        if (!item.id) return item.text;
+        if (item.element.parentElement.id === 'customer_id') {
+            return `ID: ${item.id} - ${item.text}`;
+        } else {
+            return `${item.id} - ${item.text.split(' ').slice(1).join(' ')}`;
+        }
+    }
+
+    // Re-initialize Select2 when adding new guarantor
+    const originalAddGuarantor = document.getElementById('add-guarantor').onclick;
+    document.getElementById('add-guarantor').onclick = function() {
+        originalAddGuarantor.apply(this, arguments);
+        // Wait for DOM update
+        setTimeout(() => {
+            const newGuarantor = document.querySelector('.guarantor-item:last-child');
+            $(newGuarantor).find('select').select2({
+                placeholder: 'Type to search...',
+                allowClear: true,
+                width: '100%',
+                minimumInputLength: 1,
+                templateResult: formatResult,
+                templateSelection: formatSelection
+            });
+        }, 100);
+    };
+});
+
+      </script>
+@endpush
 
 @endsection
