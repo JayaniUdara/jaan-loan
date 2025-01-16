@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
 
          Route::get('/loans/create/past', [LoanController::class, 'createPast'])->name('loans.create.past');
 
+         Route::get('/loans/{loan}/view', [LoanController::class, 'view'])->name('loans.view');
+
 
          Route::post('/loans/store', [LoanController::class, 'store'])->name('loans.store');
          Route::post('/loans/store/past', [LoanController::class, 'storePast'])->name('loans.store.past');

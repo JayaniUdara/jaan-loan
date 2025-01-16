@@ -28,6 +28,12 @@ class LoanController extends Controller
         $customers = Customer::all(); // Retrieve all customers for selection
         return view('loans.create', compact('customers'));
     }
+    public function view($id)
+    {
+        $loan = Loan::with('guarantors', 'customer', 'approvedBy')->findOrFail($id);
+        return view('loans.view', compact('loan'));
+    }
+
 
     public function createPast()
     {

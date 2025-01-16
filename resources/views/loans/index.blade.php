@@ -283,6 +283,7 @@
         <thead>
             <tr>
                 <th class="border px-4 py-2">Customer</th>
+                <th class="border px-4 py-2">Loan ID</th>
                 <th class="border px-4 py-2">Loan Amount</th>
                 <th class="border px-4 py-2">Outstanding Balance</th>
                 <th class="border px-4 py-2">Interest Rate (%)</th>
@@ -298,6 +299,7 @@
             @foreach($loans as $loan)
             <tr>
                 <td class="border px-4 py-2">{{ $loan->customer->name }}</td>
+                <td class="border px-4 py-2">{{ $loan->loan_custom_id }}</td>
                 <td class="border px-4 py-2">LKR {{ number_format($loan->amount, 2) }}</td>
                 <td class="border px-4 py-2">LKR {{ number_format($loan->outstanding_balance, 2) }}</td>
                 <td class="border px-4 py-2">{{ number_format($loan->interest_rate, 2) }}</td>
@@ -320,6 +322,7 @@
                     {{ $loan->approvedBy ? $loan->approvedBy->name : '-' }}
                 </td>
                 <td class="border px-4 py-2 flex gap-2 justify-center">
+                    <a href="{{ route('loans.view', $loan->id) }}" class="text-blue-500 hover:underline">👁 View</a>
                     <a href="{{ route('loans.edit', $loan->id) }}" class="text-blue-500 hover:underline">✏️ Edit</a>
                     <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                         @csrf

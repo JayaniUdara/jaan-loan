@@ -56,6 +56,16 @@ class DailyCollectionController extends Controller
             'status' => $validatedData['status'],
         ]);
     
+
+                // Update the loan record
+                $loan = Loan::findOrFail($validatedData['loan_id']);
+
+                // Update outstanding balance and remaining installments
+                $loan->outstanding_balance = max(0, $loan->outstanding_balance - $validatedData['amount_collected']);
+                $loan->remaining_installments = max(0, $loan->remaining_installments - 1);
+        
+                $loan->save();
+                
         return redirect()->route('daily-collections.index')->with('success', 'Daily collection recorded successfully!');
     }
     
