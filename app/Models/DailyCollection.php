@@ -34,7 +34,7 @@ class DailyCollection extends Model
 
     public function loan()
     {
-        return $this->belongsTo(Loan::class, 'id');
+        return $this->belongsTo(Loan::class, 'loan_id');
     }
 
     
