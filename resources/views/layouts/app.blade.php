@@ -56,7 +56,22 @@
     <div class="container mx-auto mt-4">
         @yield('content')
     </div>
+    <script>
+        // Script to toggle the dropdown visibility
+        document.getElementById('user-menu').addEventListener('click', function () {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('hidden');
+        });
 
+        // Close the dropdown when clicking outside
+        window.addEventListener('click', function (e) {
+            const userMenu = document.getElementById('user-menu');
+            const dropdown = document.getElementById('dropdown');
+            if (!userMenu.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
     
     @yield('scripts') 
 </body>
