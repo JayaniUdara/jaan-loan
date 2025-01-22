@@ -11,6 +11,7 @@ class CreateDailyCollectionsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Loan Collector
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('loan_id')->constrained()->onDelete('cascade');
             $table->decimal('amount_collected', 10, 2);
             $table->enum('status', ['collected', 'pending']);
             $table->text('notes')->nullable();

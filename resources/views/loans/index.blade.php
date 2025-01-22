@@ -60,10 +60,17 @@
         text-align: left;
     }
 
+
     table#customers-table th {
-       
-        font-weight: bold;
-    }
+    background: linear-gradient(135deg, #f9f9f9, #eaeaea); /* Subtle gradient background */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Small shadow for depth */
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    color: #333; /* Adjust text color for better readability */
+    border-bottom: 2px solid #d1d5db; /* Add a border to separate header */
+}
+
 
     table#customers-table tbody tr:nth-child(even) {
         background: #f9f9f9;
@@ -353,6 +360,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $(document).ready(function () {
         const table = $('#customers-table').DataTable({
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100],
             dom: 'Bfrtip',
             buttons: [
                 {

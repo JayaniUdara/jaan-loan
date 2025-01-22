@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LoanCollector;
 use App\Models\DailyCollection;
 use App\Models\Customer;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 
 class LoanCollectorController extends Controller
@@ -12,6 +13,8 @@ class LoanCollectorController extends Controller
     // Display a list of loan collectors
     public function index()
     {
+
+
         $collectors = LoanCollector::with('user')->get();
         return view('collectors.index', compact('collectors'));
     }
@@ -22,6 +25,8 @@ class LoanCollectorController extends Controller
         $collector = LoanCollector::with('user')->findOrFail($id);
         return view('collectors.show', compact('collector'));
     }
+   
+
 
     // Show the collections assigned to the loan collector for today
     public function dailyCollections()
@@ -30,6 +35,7 @@ class LoanCollectorController extends Controller
         $collections = DailyCollection::where('collector_id', $collector->id)
             ->whereDate('collection_date', today())
             ->with('customer')
+            ->with('loans')
             ->get();
 
         return view('daily_collections.index', compact('collections'));

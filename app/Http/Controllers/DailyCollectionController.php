@@ -10,21 +10,38 @@ use Illuminate\Http\Request;
 
 class DailyCollectionController extends Controller
 {
-    public function index()
-    {
-        // Get today's date at start of day for comparison
-        $today = Carbon::now()->startOfDay();
-        
-        // Fetch collections scheduled for today
-        $collections = DailyCollection::all();
-           // dd($collections);
-        
-        return view('daily_collections.index', [
-            'collections' => $collections
-        ]);
-    }
 
-    
+
+    public function index()
+{
+    // Get today's date at the start of the day
+    $today = Carbon::now()->startOfDay();
+
+    $collections = DailyCollection::with('loan')->get();
+
+
+            // Fetch collections for today with relationships
+    $todayscollections = DailyCollection::with('loan')
+    ->whereDate('collection_date', $today)
+    ->get();
+    // Calculate total cash collected today (status = 'collected')
+    $totalCollected = $todayscollections
+        ->where('status', 'collected')
+        ->sum('amount'); // Assuming 'amount' is the column for collection value
+
+    // Calculate total pending collections today (status = 'pending')
+    $totalPending = $todayscollections
+        ->where('status', 'pending')
+        ->sum('amount');
+
+    // Pass data to the view
+    return view('daily_collections.index', [
+        'collections' => $collections,
+        'totalCollected' => $totalCollected,
+        'totalPending' => $totalPending
+    ]);
+}
+
     public function createPast()
     {
       
@@ -34,6 +51,66 @@ class DailyCollectionController extends Controller
     }
     
 
+    private function updateLoansTotalDue()
+    {
+        $loans = Loan::all();
+    
+        foreach ($loans as $loan) {
+            // Get the pending collections up until today
+            $pendingCollections = DailyCollection::where('loan_id', $loan->id)
+                ->where('status', 'pending')
+                ->whereDate('collection_date', '<=', today())
+                ->get();
+    
+            $totalPendingAmount = $pendingCollections->sum('amount_collected');
+            $installmentAmount = (($loan->amount*0.01 + $loan->amount)/($loan->total_installments));
+    
+            // Add 3% interest if pending exceeds 3 installments
+            if ($totalPendingAmount > (3 * $installmentAmount)) {
+                // Find the next pending collection (next installment)
+                $nextCollection = DailyCollection::where('loan_id', $loan->id)
+                    ->where('status', 'pending')
+                    ->whereDate('collection_date', '>', today()) // Target the next day's installment
+                    ->orderBy('collection_date', 'asc') // Ensure we get the next installment
+                    ->first();
+                    
+                if ($nextCollection) {
+                    // Calculate and add the 3% interest to the next installment's collection amount
+                    $interest = $loan->total_due * 0.03;
+                    $nextCollection->amount_collected =$installmentAmount+ $interest; // Update the amount_collected
+                    $nextCollection->save();
+
+
+                    $loan->total_due = $totalPendingAmount + $installmentAmount +$interest; // Add the current installment amount
+                    $loan->save();
+                }
+
+
+            }
+    
+            // Update the loan's total due
+
+        }
+    }
+    
+
+    public function approveTodaysCollections(Request $request)
+    {
+        $request->validate([
+            'approved_by' => 'required|exists:users,id', // Ensure the approver is a valid user
+        ]);
+    
+    
+        // Update today's collections
+        $updatedCount = DailyCollection::whereDate('collection_date', today())
+            ->update([
+                'is_approved' => '1',
+                'approved_by' => $request->approved_by,
+            ]);
+    
+            $this->updateLoansTotalDue();
+        return redirect()->back()->with('success', "$updatedCount collections have been approved.");
+    }
     public function storePast(Request $request)
     {
         $validatedData = $request->validate([
@@ -65,7 +142,7 @@ class DailyCollectionController extends Controller
                 $loan->remaining_installments = max(0, $loan->remaining_installments - 1);
         
                 $loan->save();
-                
+
         return redirect()->route('daily-collections.index')->with('success', 'Daily collection recorded successfully!');
     }
     

@@ -18,6 +18,7 @@ class CreateLoansTable extends Migration
             $table->decimal('amount', 10, 2); // Total loan amount
             $table->date('loan_approved_date')->nullable(); // Loan start date
             $table->date('loan_end_date')->nullable(); // Loan end date
+            $table->decimal('total_due', 10, 2); // Total balance
 
             $table->decimal('outstanding_balance', 10, 2); // Remaining balance
             $table->float('interest_rate'); // Interest rate as a percentage

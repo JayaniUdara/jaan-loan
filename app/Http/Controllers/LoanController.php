@@ -16,10 +16,11 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loans = Loan::with('customer', 'approvedBy', 'guarantors')->paginate(10); // Eager load relationships
+        // Eager load relationships and retrieve the data
+        $loans = Loan::with('customer', 'approvedBy', 'guarantors')->get();
+       // dd($loans); // Check the retrieved dataset
         return view('loans.index', compact('loans'));
     }
-
     /**
      * Show the form for creating a new loan.
      */
@@ -49,6 +50,7 @@ class LoanController extends Controller
      public function store(Request $request)
     { //dd($request->all());
         // Validate the incoming data
+        try {
         $validatedData = $request->validate([
             'loan_custom_id' => 'nullable|string|max:255|unique:loans,loan_custom_id',
             'customer_id' => 'required|exists:customers,id',
@@ -71,6 +73,16 @@ class LoanController extends Controller
             'guarantors.*.contact.required' => 'Guarantor contact is required.',
             'guarantors.*.address.required' => 'Guarantor address is required.',
         ]);
+
+    }catch (\Illuminate\Validation\ValidationException $e) {
+        // Collect all error messages as a single string
+        $errorMessages = implode(' ', $e->validator->errors()->all());
+    
+        // Redirect with errors as a session variable
+        return redirect()->back()->withInput()->with('error', $errorMessages);// Replace with your intended route
+             // Store errors as a session variable
+
+    }
   // dd($validatedData);
         try {
             // Calculate total with interest (10% per month for 2 months)

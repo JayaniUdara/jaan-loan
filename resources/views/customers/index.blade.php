@@ -59,11 +59,15 @@
         padding: 12px 15px;
         text-align: left;
     }
-
     table#customers-table th {
-       
-        font-weight: bold;
-    }
+    background: linear-gradient(135deg, #f9f9f9, #eaeaea); /* Subtle gradient background */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Small shadow for depth */
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    color: #333; /* Adjust text color for better readability */
+    border-bottom: 2px solid #d1d5db; /* Add a border to separate header */
+}
 
     table#customers-table tbody tr:nth-child(even) {
         background: #f9f9f9;
@@ -277,6 +281,7 @@
         <thead>
             <tr>
                 <th class="border px-4 py-2">Name</th>
+                <th class="border px-4 py-2">ID</th>
                 <th class="border px-4 py-2">Contact</th>
                 <th class="border px-4 py-2">Email</th>
                 <th class="border px-4 py-2">Address</th>
@@ -293,6 +298,7 @@
             @foreach($customers as $customer)
             <tr>
                 <td class="border px-4 py-2">{{ $customer->name }}</td>
+                <td class="border px-4 py-2">{{ $customer->id }}</td>
                 <td class="border px-4 py-2">{{ $customer->contact_number }}</td>
                 <td class="border px-4 py-2">{{ $customer->email }}</td>
                 <td class="border px-4 py-2">{{ $customer->address }}</td>
@@ -345,6 +351,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $(document).ready(function () {
         const table = $('#customers-table').DataTable({
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100],
             dom: 'Bfrtip',
             buttons: [
                 {

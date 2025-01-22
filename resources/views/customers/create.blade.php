@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+
+@if(session('success') || session('error'))
+    <div id="notification" class="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 px-6 py-3 rounded-lg shadow-lg text-white font-semibold z-50"
+        style="display: none; background-color: {{ session('success') ? '#4caf50' : '#f44336' }};">
+        {{ session('success') ?? session('error') }}
+    </div>
+@endif
+
 <div class="bg-white p-6 shadow-md rounded">
     <h2 class="text-xl font-bold mb-4">Add New Customer</h2>
     <form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
@@ -44,4 +52,16 @@
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Customer</button>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.style.display = 'block';
+            notification.style.animation = 'slideDown 0.5s ease, slideUp 0.5s ease 3s';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3500); // 3.5 seconds (time for animation + display)
+        }
+    });
+    </script>
 @endsection

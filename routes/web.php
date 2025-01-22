@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/daily-collections/past', [DailyCollectionController::class, 'createPast'])->name('daily-collections.create.past');
         Route::post('/daily-collections/store/past', [DailyCollectionController::class, 'storePast'])->name('daily_collections.storePast');
 
-       
+        Route::post('/daily-collections/approve', [DailyCollectionController::class, 'approveTodaysCollections'])->name('daily_collections.approve');
         //collector management
         Route::get('/daily-collections', [DailyCollectionController::class, 'index'])->name('daily-collections.index');
         Route::post('/daily-collections/mark', [DailyCollectionController::class, 'markPayment'])->name('daily-collections.mark');
@@ -92,6 +92,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/passwordupdate', [ProfileController::class, 'update'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\Loan;
+use App\Models\Customer;
+use App\Models\DailyCollection;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -12,13 +15,29 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $totalLoans = \App\Models\Loan::count();
-        $totalCustomers = \App\Models\Customer::count();
-        $totalCollectors = \App\Models\LoanCollector::count();
+        // Total number of loans
+        $totalLoans = Loan::count();
 
-        return view('reports.index', compact('totalLoans', 'totalCustomers', 'totalCollectors'));
+        // Total number of customers
+        $totalCustomers = Customer::count();
+
+        // Total outstanding loan amount
+        $totalOutstandingLoans = Loan::sum('outstanding_balance');
+
+        // Total dues
+        $totalDues = Loan::sum('total_due');
+
+        // Total daily collections
+        $totalCollections = DailyCollection::where('status', 'collected')->sum('amount_collected');
+
+        return view('reports.index', compact(
+            'totalLoans',
+            'totalCustomers',
+            'totalOutstandingLoans',
+            'totalDues',
+            'totalCollections'
+        ));
     }
-
     /**
      * Show the form for creating a new resource.
      */

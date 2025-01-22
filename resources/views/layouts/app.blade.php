@@ -23,7 +23,7 @@
 
 
 <!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <!-- Include Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -56,6 +56,8 @@
     <div class="container mx-auto mt-4">
         @yield('content')
     </div>
+
+    
     @yield('scripts') 
 </body>
 </html>

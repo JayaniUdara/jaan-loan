@@ -33,6 +33,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+        try {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'contact_number' => 'required|string|unique:customers,contact_number|max:20',
@@ -44,7 +45,15 @@ class CustomerController extends Controller
             'monthly_income' => 'nullable|numeric|min:0',
             'profile_photo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+    }catch (\Illuminate\Validation\ValidationException $e) {
+        // Collect all error messages as a single string
+        $errorMessages = implode(' ', $e->validator->errors()->all());
+    
+        // Redirect with errors as a session variable
+        return redirect()->back()->withInput()->with('error', $errorMessages);// Replace with your intended route
+             // Store errors as a session variable
 
+    }
         // Handle file upload
         if ($request->hasFile('profile_photo_path')) {
             $validated['profile_photo_path'] = $request->file('profile_photo_path')->store('profile_photos', 'public');

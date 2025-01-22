@@ -26,6 +26,7 @@ class Loan extends Model
         'total_installments',
         'remaining_installments',
         'status',
+        'total_due',
         'is_approved',
         'approved_by',
     ];
@@ -61,5 +62,11 @@ class Loan extends Model
     {
         return $this->hasMany(Guarantor::class);
     }
+
+    public function dailyCollections()
+    {
+        return $this->hasMany(DailyCollection::class);
+    }
+
     
 }
