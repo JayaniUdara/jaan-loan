@@ -77,7 +77,7 @@ class LoanController extends Controller
     }catch (\Illuminate\Validation\ValidationException $e) {
         // Collect all error messages as a single string
         $errorMessages = implode(' ', $e->validator->errors()->all());
-    
+
         // Redirect with errors as a session variable
         return redirect()->back()->withInput()->with('error', $errorMessages);// Replace with your intended route
              // Store errors as a session variable
@@ -89,7 +89,7 @@ class LoanController extends Controller
             $interestRate = 0.10; // 10% per month
             $months = 2; // 2 months
             $totalWithInterest = $validatedData['amount'] + ($validatedData['amount'] * $interestRate * $months);
-    
+
             // Calculate installment amount
             $installmentAmount = $validatedData['installment_duration'] === 'daily'
                 ? $totalWithInterest / 60 // 60 days
@@ -138,7 +138,7 @@ class LoanController extends Controller
 
 
     public function storePast(Request $request)
-    { 
+    {
         // Validate the incoming data
         $validatedData = $request->validate([
             'loan_custom_id' => 'required|string|max:255|unique:loans,loan_custom_id',
@@ -173,7 +173,7 @@ class LoanController extends Controller
             $interestRate = 0.10; // 10% per month
             $months = 2; // 2 months
             $totalWithInterest = $validatedData['amount'] + ($validatedData['amount'] * $interestRate * $months);
-    
+
             // Calculate installment amount
             $installmentAmount = $validatedData['installment_duration'] === 'daily'
                 ? $totalWithInterest / 60 // 60 days
@@ -229,7 +229,7 @@ class LoanController extends Controller
     public function edit($id)
     {
         $loan = Loan::with('guarantors')->findOrFail($id);
-        $customers = Customer::all(); 
+        $customers = Customer::all();
         $users = User::all();
         return view('loans.edit', compact('loan', 'customers','users'));
     }
@@ -277,7 +277,7 @@ class LoanController extends Controller
     public function updateApprove(Request $request, $id)
     {
         $loan = Loan::findOrFail($id);
-        
+
         try {
             // Update loan status
             $loan->update([
@@ -285,7 +285,7 @@ class LoanController extends Controller
                 'is_approved' => true,
                 'approved_by' => auth()->id(),
             ]);
-            
+
             // Generate collection dates
             $total = $loan->total_installments;
             $startDate = Carbon::parse($loan->loan_approved_date)->startOfDay();
@@ -294,28 +294,28 @@ class LoanController extends Controller
             $remainingDays = ($loan->installment_duration + 1) * $loan->total_installments;
             $totalInterest = $dailyInterest * $remainingDays;
             $installmentAmount =  ($totalAmount + $totalInterest)/$loan->total_installments;
-    
-            
+
+
             // Create collection records for each date
             for ($i = 1; $i <= $total; $i++) {
                 DailyCollection::create([
                     'loan_id' => $loan->id,
                     'user_id' => auth()->id(),
                     'customer_id' => $loan->customer_id,
-                    'amount_collected' => $installmentAmount, 
+                    'amount_collected' => $installmentAmount,
                     'status' => 'pending',
                     'collection_date' => $startDate->copy()->addDays($i * 2),
                     'notes' => 'null'
                 ]);
             }
-            
-            
+
+
             return redirect()
                 ->route('loans.index')
                 ->with('success', 'Loan approved successfully and collection schedule created!');
-                
+
         } catch (\Exception $e) {
-            
+
             return redirect()
                 ->route('loans.index')
                 ->with('error', 'Failed to approve loan: ' . $e->getMessage());

@@ -127,7 +127,7 @@
 
     /* Pagination Styling */
     .dataTables_paginate .paginate_button {
-       
+
         color: white !important;
         border-radius: 10px;
         margin: 2px;
@@ -136,12 +136,12 @@
     }
 
     .dataTables_paginate .paginate_button:hover {
-      
+
         color: white !important;
     }
 
     .dataTables_paginate .paginate_button.current {
-      
+
         color: white !important;
     }
 
@@ -163,7 +163,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    
+
 }
 
 .custom-print-btn:hover {
@@ -187,7 +187,7 @@
     </div>
 @endif
 <div class="bg-white p-6 shadow-md rounded">
-   
+
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold">Loans</h2>
             <div class="flex justify-right items-right mb-4">
@@ -260,14 +260,14 @@
             <option value="Approved">Approved</option>
             <option value="Pending">Pending</option>
         </select>
-        
+
 
     </div>
     <div class="w-full">
-        <input 
-            type="text" 
-            id="custom-search-bar" 
-            placeholder="Search records..." 
+        <input
+            type="text"
+            id="custom-search-bar"
+            placeholder="Search records..."
             class="w-full border-gray-300 rounded-lg p-2 shadow-sm"
         >
     </div>
@@ -323,7 +323,7 @@
                             @method('PATCH')
                             <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded-md">Approve</button>
                         </form>
-                    @endif  
+                    @endif
                 </td>
                 <td class="border px-4 py-2">
                     {{ $loan->approvedBy ? $loan->approvedBy->name : '-' }}
@@ -341,7 +341,7 @@
             @endforeach
         </tbody>
     </table>
-    
+
 </div>
 
 <script>
