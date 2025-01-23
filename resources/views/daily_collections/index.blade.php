@@ -260,7 +260,7 @@
             @foreach($collections as $collection)
             <tr>
                 <td>{{ $collection->customer->name }}</td>
-                <td>{{ $collection->loan->id ?? 'N/A'}}</td>
+                <td>{{ $collection->loan->loan_custom_id ?? 'N/A'}}</td>
                 <td>{{ $collection->collection_date}}</td>
                 <td>LKR {{ number_format($collection->amount_collected, 2) }}</td>
                 <td>
