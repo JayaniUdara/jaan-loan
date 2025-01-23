@@ -109,7 +109,7 @@
     }
 
     .filters button {
-        background: linear-gradient(135deg, #8A2BE2, #00BFFF);
+        background: #52B69A;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -186,9 +186,9 @@
 <div class="bg-white p-6 shadow-md rounded">
    
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Customers</h2>
+            <h2 class="text-3xl font-bold text-[#184E77]">Customers</h2>
  
-            <a href="{{ route('customers.create') }}" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+            <a href="{{ route('customers.create') }}" class="text-white px-4 py-2 rounded-md" style="background: #184E77">
                 Add New Customer
             </a>
         </div>

@@ -22,9 +22,9 @@
 
     <form method="POST" action="{{ route('daily_collections.storePast') }}">
         @csrf
-
-        <!-- Loan ID -->
-        <div class="mb-4">
+        <div class="w-full flex space-x-4">
+            <!-- Loan ID -->
+        <div class="w-1/2 mb-4">
             <label for="loan_id" class="block text-sm font-medium">Select Loan ID</label>
             <select id="loan_id" name="loan_id" class="mt-1 block w-full border-gray-300 rounded-md" required>
                 <option value="">Select Loan</option>
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Customer ID -->
-        <div class="mb-4">
+        <div class="w-1/2 mb-4">
             <label for="customer_id" class="block text-sm font-medium">Select Customer ID</label>
             <select id="customer_id" name="customer_id" class="mt-1 block w-full border-gray-300 rounded-md" required>
                 <option value="">Select Customer</option>
@@ -43,6 +43,7 @@
                     <option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
                 @endforeach
             </select>
+        </div>
         </div>
 
         <!-- Amount Collected -->

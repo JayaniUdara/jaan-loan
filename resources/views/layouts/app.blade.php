@@ -9,7 +9,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -33,14 +36,14 @@
 
 </head>
 <body class="bg-gray-100">
-    <nav class="p-4 text-white" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+    <nav class="p-4 text-white">
         <div class="container mx-auto flex justify-between items-left">
-            <a href="{{ route('dashboard') }}" class="block px-4 py-2">Home</a>
-            <h1 class="text-xl">Loan Management System</h1>
+            <a href="{{ route('dashboard') }}" class="block px-4 py-2"><img src="/dashboard_images/white-logo-removebg-preview (1).png" alt="Icon 1" class="w-[130px]"></a>
+            
             
             <!-- User Dropdown -->
-            <div class="relative">
-                <button id="user-menu" class="focus:outline-none focus:ring-2 focus:ring-white">
+            <div class="relative text-black">
+                <button id="user-menu" class="focus:outline-none focus:ring-2 focus:ring-white p-2">
                     <span class="font-bold">{{ Auth::user()->name }}</span> ({{ ucfirst(Auth::user()->role) }})
                 </button>
                 <div id="dropdown" class="hidden absolute right-0 mt-2 bg-white text-black shadow rounded w-48">
@@ -53,7 +56,7 @@
             </div>
         </div>
     </nav>
-    <div class="container mx-auto mt-4">
+    <div class="w-full md:px-24">
         @yield('content')
     </div>
     <script>
