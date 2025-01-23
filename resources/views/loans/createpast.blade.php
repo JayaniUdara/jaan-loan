@@ -27,18 +27,20 @@
               <!-- Loan Custom ID -->
               <div class="mb-4">
                 <label for="loan_custom_id" class="block text-sm font-medium">Loan Custom ID</label>
-                <input 
-                    type="text" 
-                    id="loan_custom_id" 
-                    name="loan_custom_id" 
-                    class="mt-1 block w-full border-gray-300 rounded-md" 
-                    placeholder="Enter a unique loan ID" 
+                <input
+                    type="text"
+                    id="loan_custom_id"
+                    name="loan_custom_id"
+                    class="mt-1 block w-full border-gray-300 rounded-md"
+                    placeholder="Enter a unique loan ID"
                 >
             </div>
+
+
  <!-- Customer ID -->
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
-           
+
 
                 <select id="customer_id" name="customer_id" class="mt-1 block w-full border-gray-300 rounded-md">
                     <option value="">Select Customer</option>
@@ -46,7 +48,36 @@
                         <option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
                     @endforeach
                 </select>
+            </div> --}}
+
+
+
+            <div class="mb-4 relative">
+                <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
+
+                <input
+                    type="text"
+                    id="customer_id"
+                    name="customer_id"
+                    placeholder="Search by ID or Name"
+                    class="mt-1 block w-full border-gray-300 rounded-md"
+                    onfocus="showAllCustomers()"
+                    oninput="searchCustomer()"
+                    onblur="hideCustomerSuggestions()"
+                    autocomplete="off"
+                    required
+                />
+
+                <ul
+                    id="customer_suggestions"
+                    class="mt-2 border rounded-md max-h-40 overflow-auto bg-white w-full z-10 shadow-lg hidden absolute"
+                >
+                    <!-- Suggestions will be populated dynamically -->
+                </ul>
             </div>
+
+
+
    <!-- Loan Amount -->
    <div class="mb-4">
     <label for="amount" class="block text-sm font-medium">Loan Amount</label>
@@ -56,11 +87,11 @@
 <!-- Total with Interest -->
 <div class="mb-4">
     <label for="total_with_interest" class="block text-sm font-medium">Total with Interest (2 Months at 10% per month)</label>
-    <input 
-        type="text" 
-        id="total_with_interest" 
-        name="total_with_interest" 
-        class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100" 
+    <input
+        type="text"
+        id="total_with_interest"
+        name="total_with_interest"
+        class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
         readonly>
 </div>
 
@@ -76,11 +107,11 @@
 <!-- Installment Amount -->
 <div class="mb-4">
     <label for="installment_amount" class="block text-sm font-medium">Installment Amount</label>
-    <input 
-        type="text" 
-        id="installment_amount" 
-        name="installment_amount" 
-        class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100" 
+    <input
+        type="text"
+        id="installment_amount"
+        name="installment_amount"
+        class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
         readonly>
 </div>
 
@@ -98,20 +129,20 @@
        <!-- Loan Approved Date -->
        <div class="mb-4">
         <label for="loan_approved_date" class="block text-sm font-medium">Loan Approved Date</label>
-        <input 
-            type="date" 
-            id="loan_approved_date" 
-            name="loan_approved_date" 
+        <input
+            type="date"
+            id="loan_approved_date"
+            name="loan_approved_date"
             class="mt-1 block w-full border-gray-300 rounded-md">
     </div>
 
     <!-- Loan End Date -->
     <div class="mb-4">
         <label for="loan_end_date" class="block text-sm font-medium">Loan End Date</label>
-        <input 
-            type="date" 
-            id="loan_end_date" 
-            name="loan_end_date" 
+        <input
+            type="date"
+            id="loan_end_date"
+            name="loan_end_date"
             class="mt-1 block w-full border-gray-300 rounded-md">
     </div>
 
@@ -119,7 +150,7 @@
 
      <div class="mb-4">
         <label for="approved_by" class="block text-sm font-medium">Approved User ID</label>
-   
+
 
         <select id="approved_by" name="approved_by" class="mt-1 block w-full border-gray-300 rounded-md">
             <option value="">Select User</option>
@@ -138,54 +169,54 @@
                 </h3>
                 <div class="guarantor-details">
 
+
+
                     <div class="mb-4">
                         <label for="guarantors[0][national_id]" class="block text-sm font-medium">National ID</label>
-                        <select name="guarantors[0][national_id]" class="mt-1 block w-full border-gray-300 rounded-md" required>
-                            <option value="">Select NIC</option>
-                            @foreach($customers as $customer)
-                                <option value="{{ $customer->national_id }}">{{ $customer->national_id }} {{ $customer->name }}</option>
-                            @endforeach
-                        </select>
+                        <input
+                            type="text"
+                            id="guarantor_nic"
+                            name="guarantors[0][national_id]"
+                            class="mt-1 block w-full border-gray-300 rounded-md"
+                            required
+                            onfocus="showGuarantorSuggestions()"
+                            oninput="filterGuarantorSuggestions(this.value)"
+                        >
+                        <ul id="guarantor-nic-suggestions" class="border border-gray-300 rounded-md bg-white hidden">
+                            <!-- Suggestions will be dynamically populated -->
+                        </ul>
                     </div>
+
                     <div class="mb-4">
                         <label for="guarantors[0][name]" class="block text-sm font-medium">Name</label>
-                        <input type="text" name="guarantors[0][name]" class="mt-1 block w-full border-gray-300 rounded-md" required>
+                        <input type="text" id="guarantor_name" name="guarantors[0][name]" class="mt-1 block w-full border-gray-300 rounded-md" required>
                     </div>
 
                     <div class="mb-4">
                         <label for="guarantors[0][contact]" class="block text-sm font-medium">Contact</label>
-                        <input type="text" name="guarantors[0][contact]" class="mt-1 block w-full border-gray-300 rounded-md" required>
+                        <input type="text" id="guarantor_contact" name="guarantors[0][contact]" class="mt-1 block w-full border-gray-300 rounded-md" required>
                     </div>
 
                     <div class="mb-4">
                         <label for="guarantors[0][address]" class="block text-sm font-medium">Address</label>
-                        <input type="text" name="guarantors[0][address]" class="mt-1 block w-full border-gray-300 rounded-md" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="guarantors[0][relationship]" class="block text-sm font-medium">Relationship</label>
-                        <input type="text" name="guarantors[0][relationship]" class="mt-1 block w-full border-gray-300 rounded-md">
+                        <input type="text" id="guarantor_address" name="guarantors[0][address]" class="mt-1 block w-full border-gray-300 rounded-md" required>
                     </div>
 
                     <div class="mb-4">
                         <label for="guarantors[0][date_of_birth]" class="block text-sm font-medium">Date of Birth</label>
-                        <input type="date" name="guarantors[0][date_of_birth]" class="mt-1 block w-full border-gray-300 rounded-md">
+                        <input type="date" id="guarantor_dob" name="guarantors[0][date_of_birth]" class="mt-1 block w-full border-gray-300 rounded-md">
                     </div>
 
                     <div class="mb-4">
                         <label for="guarantors[0][occupation]" class="block text-sm font-medium">Occupation</label>
-                        <input type="text" name="guarantors[0][occupation]" class="mt-1 block w-full border-gray-300 rounded-md">
+                        <input type="text" id="guarantor_occupation" name="guarantors[0][occupation]" class="mt-1 block w-full border-gray-300 rounded-md">
                     </div>
 
                     <div class="mb-4">
                         <label for="guarantors[0][annual_income]" class="block text-sm font-medium">Annual Income</label>
-                        <input type="number" step="0.01" name="guarantors[0][annual_income]" class="mt-1 block w-full border-gray-300 rounded-md">
+                        <input type="number" step="0.01" id="guarantor_income" name="guarantors[0][annual_income]" class="mt-1 block w-full border-gray-300 rounded-md">
                     </div>
 
-                    <div class="mb-4">
-                        <label for="guarantors[0][additional_notes]" class="block text-sm font-medium">Additional Notes</label>
-                        <textarea name="guarantors[0][additional_notes]" class="mt-1 block w-full border-gray-300 rounded-md"></textarea>
-                    </div>
                 </div>
             </div>
         </div>
@@ -275,14 +306,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const totalWithInterestInput = document.getElementById('total_with_interest');
       const installmentDurationSelect = document.getElementById('installment_duration');
       const installmentAmountInput = document.getElementById('installment_amount');
-  
+
       // Interest calculation functions
       const calculateTotalWithInterest = (amount) => {
           const interestRate = 0.10;
           const months = 2;
           return amount + (amount * interestRate * months);
       };
-  
+
       const calculateInstallmentAmount = (total, duration) => {
           if (duration === 'daily') {
               return total / 60;
@@ -291,37 +322,37 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           return 0;
       };
-  
+
       // Interest calculation event listeners
       amountInput.addEventListener('input', () => {
           const amount = parseFloat(amountInput.value) || 0;
           const totalWithInterest = calculateTotalWithInterest(amount);
           totalWithInterestInput.value = totalWithInterest.toFixed(2);
-  
+
           const duration = installmentDurationSelect.value;
           const installmentAmount = calculateInstallmentAmount(totalWithInterest, duration);
           installmentAmountInput.value = installmentAmount.toFixed(2);
       });
-  
+
       installmentDurationSelect.addEventListener('change', () => {
           const totalWithInterest = parseFloat(totalWithInterestInput.value) || 0;
           const duration = installmentDurationSelect.value;
           const installmentAmount = calculateInstallmentAmount(totalWithInterest, duration);
           installmentAmountInput.value = installmentAmount.toFixed(2);
       });
-  
+
       // Guarantor functions
       const initializeGuarantorListeners = (guarantorItem) => {
           const nicSelect = guarantorItem.querySelector('select[name$="[national_id]"]');
           if (!nicSelect) return;
-  
+
           nicSelect.addEventListener('change', (e) => {
               const selectedNIC = e.target.value;
               const customer = customers.find(c => c.national_id === selectedNIC);
-              
+
               if (customer) {
                   const guarantorDiv = e.target.closest('.guarantor-item');
-                  
+
                   // Update all fields within this specific guarantor div
                   const nameInput = guarantorDiv.querySelector('input[name$="[name]"]');
                   const contactInput = guarantorDiv.querySelector('input[name$="[contact]"]');
@@ -329,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   const dobInput = guarantorDiv.querySelector('input[name$="[date_of_birth]"]');
                   const occupationInput = guarantorDiv.querySelector('input[name$="[occupation]"]');
                   const annualIncomeInput = guarantorDiv.querySelector('input[name$="[annual_income]"]');
-  
+
                   if (nameInput) nameInput.value = customer.name || '';
                   if (contactInput) contactInput.value = customer.contact_number || '';
                   if (addressInput) addressInput.value = customer.address || '';
@@ -339,23 +370,25 @@ document.addEventListener('DOMContentLoaded', () => {
               }
           });
       };
-  
+
       // Initialize existing guarantor
       document.querySelectorAll('.guarantor-item').forEach(initializeGuarantorListeners);
-  
+
       // Add new guarantor functionality
       let guarantorIndex = 1;
       document.getElementById('add-guarantor').addEventListener('click', () => {
           const container = document.getElementById('guarantors-container');
           const guarantorTemplate = document.createElement('div');
           guarantorTemplate.className = 'guarantor-item border p-4 mb-4 rounded-md';
-          
+
           guarantorTemplate.innerHTML = `
               <h3 class="font-medium flex justify-between items-center">Guarantor ${guarantorIndex + 1}
                   <button type="button" class="minimize-btn text-sm text-blue-500 ml-2">Minimize</button>
                   <button type="button" class="remove-btn text-sm text-red-500 ml-2">Remove</button>
               </h3>
               <div class="guarantor-details">
+
+
                   <div class="mb-4">
                       <label for="guarantors[${guarantorIndex}][national_id]" class="block text-sm font-medium">National ID</label>
                       <select name="guarantors[${guarantorIndex}][national_id]" class="mt-1 block w-full border-gray-300 rounded-md" required>
@@ -365,6 +398,9 @@ document.addEventListener('DOMContentLoaded', () => {
                           `).join('')}
                       </select>
                   </div>
+
+
+
                   <div class="mb-4">
                       <label for="guarantors[${guarantorIndex}][name]" class="block text-sm font-medium">Name</label>
                       <input type="text" name="guarantors[${guarantorIndex}][name]" class="mt-1 block w-full border-gray-300 rounded-md" required>
@@ -399,13 +435,13 @@ document.addEventListener('DOMContentLoaded', () => {
                   </div>
               </div>
           `;
-  
+
           // Add event listeners for minimize/remove buttons
           guarantorTemplate.querySelector('.remove-btn').addEventListener('click', () => {
               guarantorTemplate.remove();
               guarantorIndex--;
           });
-          
+
           guarantorTemplate.querySelector('.minimize-btn').addEventListener('click', (e) => {
               const details = guarantorTemplate.querySelector('.guarantor-details');
               if (details.style.display === 'none') {
@@ -416,16 +452,152 @@ document.addEventListener('DOMContentLoaded', () => {
                   e.target.innerText = 'Expand';
               }
           });
-  
+
           container.appendChild(guarantorTemplate);
-          
+
           // Initialize listeners for the new guarantor
           initializeGuarantorListeners(guarantorTemplate);
-          
+
           guarantorIndex++;
       });
   });
-      </script>
+</script>
+
+<script>
+
+    const guarantors = @json($customers); // Pass guarantors data from backend
+
+    // Display all NIC suggestions when the user focuses on the NIC field
+    function showGuarantorSuggestions() {
+        const suggestionBox = document.getElementById("guarantor-nic-suggestions");
+        suggestionBox.classList.remove("hidden");
+        populateGuarantorSuggestions(guarantors);
+    }
+
+    // Filter NIC suggestions based on the user's input
+    function filterGuarantorSuggestions(query) {
+        const filteredGuarantors = guarantors.filter(guarantor =>
+            guarantor.national_id.toLowerCase().includes(query.toLowerCase()) ||
+            guarantor.name.toLowerCase().includes(query.toLowerCase())
+        );
+        populateGuarantorSuggestions(filteredGuarantors);
+    }
+
+    // Populate the NIC suggestions dynamically
+    function populateGuarantorSuggestions(data) {
+        const suggestionBox = document.getElementById("guarantor-nic-suggestions");
+        suggestionBox.innerHTML = ""; // Clear existing suggestions
+        data.forEach(guarantor => {
+            const listItem = document.createElement("li");
+            listItem.className = "p-2 cursor-pointer hover:bg-gray-200";
+            listItem.textContent = `${guarantor.national_id} - ${guarantor.name}`;
+            listItem.onclick = () => autofillGuarantorDetails(guarantor);
+            suggestionBox.appendChild(listItem);
+        });
+    }
+
+    // Autofill guarantor details based on the selected NIC
+    function autofillGuarantorDetails(guarantor) {
+        document.getElementById("guarantor_nic").value = guarantor.national_id;
+        document.getElementById("guarantor_name").value = guarantor.name;
+        document.getElementById("guarantor_contact").value = guarantor.contact_number || "";
+        document.getElementById("guarantor_address").value = guarantor.address || "";
+        document.getElementById("guarantor_dob").value = guarantor.date_of_birth || "";
+        document.getElementById("guarantor_occupation").value = guarantor.occupation || "";
+        document.getElementById("guarantor_income").value = (guarantor.monthly_income * 12) || "";
+        document.getElementById("guarantor-nic-suggestions").classList.add("hidden");
+    }
+
+    // Close the suggestions dropdown when clicking outside the field or suggestions
+    document.addEventListener("click", (event) => {
+        const suggestionBox = document.getElementById("guarantor-nic-suggestions");
+        const nicField = document.getElementById("guarantor_nic");
+        if (!suggestionBox.contains(event.target) && event.target !== nicField) {
+            suggestionBox.classList.add("hidden");
+        }
+    });
+
+
+</script>
+
+<script>
+
+    const customers = @json($customers); // Assume the customer data is passed from the server
+
+    // Show all customers when input is focused
+    function showAllCustomers() {
+        const suggestions = document.getElementById('customer_suggestions');
+        suggestions.innerHTML = customers.map(customer => `
+            <li class="p-2 cursor-pointer" data-id="${customer.id}">
+                ${customer.id} - ${customer.name}
+            </li>
+        `).join('');
+        suggestions.classList.remove('hidden');
+    }
+
+    // Filter customers based on the search input
+    function searchCustomer() {
+        const searchTerm = document.getElementById('customer_id').value.toLowerCase();
+        const filteredCustomers = customers.filter(customer =>
+            customer.id.toString().toLowerCase().includes(searchTerm) ||
+            customer.name.toLowerCase().includes(searchTerm)
+        );
+
+        const suggestions = document.getElementById('customer_suggestions');
+        suggestions.innerHTML = filteredCustomers.map(customer => `
+            <li class="p-2 cursor-pointer" data-id="${customer.id}">
+                ${customer.id} - ${customer.name}
+            </li>
+        `).join('');
+        suggestions.classList.remove('hidden');
+    }
+
+    // Hide suggestions when input loses focus
+    function hideCustomerSuggestions() {
+        const suggestions = document.getElementById('customer_suggestions');
+        setTimeout(() => { // Delay to allow click on suggestion
+            suggestions.classList.add('hidden');
+        }, 100);
+    }
+
+    // Handle the selection of a customer from the suggestions
+    document.addEventListener('click', function(event) {
+        if (event.target && event.target.matches("li[data-id]")) {
+            const selectedCustomerId = event.target.getAttribute('data-id');
+            const customerInput = document.getElementById('customer_id');
+            customerInput.value = event.target.innerText; // Set value to selected customer
+            customerInput.setAttribute('data-id', selectedCustomerId); // Optionally set data-id
+            hideCustomerSuggestions(); // Hide suggestions after selection
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @push('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -555,6 +727,7 @@ $(document).ready(function() {
 });
 
       </script>
+
 @endpush
 
 @endsection
