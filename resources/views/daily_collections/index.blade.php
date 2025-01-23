@@ -44,7 +44,7 @@
     }
 
     /* Rounded Table Styling */
-    table#customers-table {
+    table#daily-collections-table {
         border-collapse: separate;
         border-spacing: 0;
         overflow: hidden;
@@ -109,7 +109,7 @@
     }
 
     .filters button {
-        background: linear-gradient(135deg, #8A2BE2, #00BFFF);
+        background: #52B69A;
         color: white;
         margin-top:30px;
         height:50%;
@@ -121,7 +121,7 @@
     }
 
     .filters button:hover {
-        background: linear-gradient(135deg, #512888, #4b2cf0);
+        background: #52B69A;
     }
 
     /* Pagination Styling */
@@ -195,7 +195,7 @@
 
         <div class="flex justify-center space-x-4 mb-4">
             <!-- Total Collected Today --> <h3 class="text-sm font-medium">Today's Summary</h3>
-            <div class="summary-card rounded-full flex items-center justify-between bg-gray-100 shadow-md p-2 w-56">
+            <div class="summary-card flex items-center justify-between bg-gray-100 shadow-md p-2 w-56">
                
                 <div>
                     <h3 class="text-sm font-medium">Total Collected</h3>
@@ -206,7 +206,7 @@
                 </div>
             </div>
             <!-- Total Pending Today -->
-            <div class="summary-card rounded-full flex items-center justify-between bg-gray-100 shadow-md p-2 w-56">
+            <div class="summary-card flex items-center justify-between bg-gray-100 shadow-md p-2 w-56">
                 <div>
                     <h3 class="text-sm font-medium">Total Pending</h3>
                     <p class="text-lg font-semibold">LKR {{ number_format($totalPending, 2) }}</p>
@@ -216,7 +216,7 @@
                 </div>
             </div>
         </div>
-        <a href="{{ route('daily-collections.create.past') }}" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+        <a href="{{ route('daily-collections.create.past') }}" class="text-white px-4 py-2 rounded-md" style="background: #184E77">
             Add Past Record
         </a>
     </div>
@@ -243,6 +243,9 @@
             <input type="date" id="filter-date" value="{{ now()->toDateString() }}">
         </div>
         <button id="reset-filters">Reset Filters</button>
+        <button id="custom-print-button" class="custom-print-btn">
+            Custom Print
+        </button>
     </div>
 
     <!-- Table -->
@@ -302,6 +305,10 @@
                 table.search('').draw(); // Clear the filter when no date is selected
             }
         });
+
+        $('#custom-print-button').on('click', function () {
+        table.button('.buttons-print').trigger(); // Trigger the DataTables print button
+    });
 
         $('#reset-filters').on('click', function () {
             $('#filter-date').val('');

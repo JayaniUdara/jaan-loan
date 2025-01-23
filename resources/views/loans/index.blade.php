@@ -112,7 +112,7 @@
     }
 
     .filters button {
-        background: linear-gradient(135deg, #8A2BE2, #00BFFF);
+        background: #52B69A;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -122,7 +122,7 @@
     }
 
     .filters button:hover {
-        background: linear-gradient(135deg, #512888, #4b2cf0);
+        background: #52B69A;
     }
 
     /* Pagination Styling */
@@ -189,12 +189,12 @@
 <div class="bg-white p-6 shadow-md rounded">
    
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Loans</h2>
+            <h2 class="text-3xl font-bold text-[#184E77]">Loans</h2>
             <div class="flex justify-right items-right mb-4">
-            <a href="{{ route('loans.create.past') }}" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+            <a href="{{ route('loans.create.past') }}" class="text-white px-4 py-2 rounded-md" style="background: #184E77">
                 Add Past Record
             </a>
-            <a href="{{ route('loans.create') }}" class="text-white px-4 py-2 rounded-md ml-3" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+            <a href="{{ route('loans.create') }}" class="text-white px-4 py-2 rounded-md ml-3" style="background: #184E77">
                 Add New Record
             </a>
             </div>

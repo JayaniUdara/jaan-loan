@@ -1,83 +1,107 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="w-full grid grid-cols-1 md:grid-cols-4 gap-6 md:px-0 px-8">
     <!-- Customer Management -->
     <div 
-        class="bg-white p-6 shadow rounded-3xl hover:shadow-lg transition min-h-[250px] cursor-pointer group" 
+        class="p-6 shadow rounded-lg hover:shadow-lg transition cursor-pointer text-white hover:text-white space-y-4 group" 
         onclick="window.location='{{ route('customers.index') }}'"
-        style="background: white;"
-        onmouseover="this.style.background='linear-gradient(135deg, #8A2BE2, #00BFFF)'; this.style.color='white';"
-        onmouseout="this.style.background='white'; this.style.color='inherit';"
+        style="background: #4d7c0f;"
+        onmouseout="this.style.background='#4d7c0f'; this.style.color='#FFFFFF';"
+        
     >
-        <h2 class="text-xl font-bold group-hover:text-white">Customer Management</h2>
-        <p class="text-gray-600 group-hover:text-white">Easily manage customer details, track history, and view customer lists to streamline operations.</p>
-        <p class="mt-4 text-sm font-medium text-blue-500 group-hover:text-white">Click to explore Customer Management</p>
+<div class="w-full flex justify-center items-center">
+    <div class="w-4/6 flex justify-center items-center bg-white rounded-full p-8">
+        <img src="./dashboard_images/customer.png" alt="Icon 1" class="w-auto h-auto">
+        </div>
+</div>
+<h2 class="text-xl font-bold group-hover:text-white roboto- text-center" style="font-size: 1.25rem;">Customer Management</h2>
+        <p class="group-hover:text-white roboto- text-sm text-center">Easily manage customer details, track history to streamline operations.</p>
     </div>
 
     <!-- Loan Management -->
     <div 
-        class="bg-white p-6 shadow rounded-3xl hover:shadow-lg transition min-h-[250px] cursor-pointer group" 
+        class="p-6 shadow rounded-lg text-white hover:shadow-lg transition space-y-4 cursor-pointer group" 
         onclick="window.location='{{ route('loans.index') }}'"
-        style="background: white;"
-        onmouseover="this.style.background='linear-gradient(135deg, #8A2BE2, #00BFFF)'; this.style.color='white';"
-        onmouseout="this.style.background='white'; this.style.color='inherit';"
+        style="background: #003161;"
+        onmouseout="this.style.background='#003161'; this.style.color='#FFFFFF';"
     >
-        <h2 class="text-xl font-bold group-hover:text-white">Loan Management</h2>
-        <p class="text-gray-600 group-hover:text-white">Create, view, and manage loans efficiently with automated calculations and tracking.</p>
-        <p class="mt-4 text-sm font-medium text-blue-500 group-hover:text-white">Click to explore Loan Management</p>
+    <div class="w-full flex justify-center items-center">
+        <div class="w-4/6 flex justify-center items-center bg-white rounded-full p-8">
+            <img src="./dashboard_images/signing.png" alt="Icon 1" class="w-[130px]">
+        </div>
+    </div>
+    <h2 class="text-xl font-bold group-hover:text-white roboto- text-center">Loan Management</h2>
+
+        <p class="group-hover:text-white roboto- text-sm  text-center">Create, view, and manage loans efficiently with automated calculations and tracking.</p>
     </div>
 
     <!-- Daily Collections -->
     <div 
-        class="bg-white p-6 shadow rounded-3xl hover:shadow-lg transition min-h-[250px] cursor-pointer group" 
+        class="p-6 shadow rounded-lg hover:shadow-lg transition cursor-pointer text-white space-y-4 group" 
         onclick="window.location='{{ route('daily-collections.index') }}'"
-        style="background: white;"
-        onmouseover="this.style.background='linear-gradient(135deg, #8A2BE2, #00BFFF)'; this.style.color='white';"
-        onmouseout="this.style.background='white'; this.style.color='inherit';"
+        style="background: #C62E2E;"
+        onmouseout="this.style.background='#C62E2E'; this.style.color='#FFFFFF';"
     >
-        <h2 class="text-xl font-bold group-hover:text-white">Daily Collections</h2>
-        <p class="text-gray-600 group-hover:text-white">Monitor and manage daily collection records with ease and accuracy.</p>
-        <p class="mt-4 text-sm font-medium text-blue-500 group-hover:text-white">Click to explore Daily Collections</p>
+    <div class="w-full flex justify-center items-center">
+        <div class="w-4/6 flex justify-center items-center bg-white rounded-full p-8">
+            <img src="./dashboard_images/cash-on-delivery.png" alt="Icon 1" class="w-[130px]">
+        </div>
+    </div>
+    <h2 class="text-xl font-bold roboto- text-center group-hover:text-white">Daily Collections</h2>
+
+        <p class="group-hover:text-white roboto- text-sm  text-center">Monitor and manage daily collection records with ease and accuracy.</p>
     </div>
 
     <!-- Collectors Management -->
     <div 
-        class="bg-white p-6 shadow rounded-3xl hover:shadow-lg transition min-h-[250px] cursor-pointer group" 
+        class="p-6 shadow rounded-lg hover:shadow-lg text-white transition space-y-4 cursor-pointer group" 
         onclick="window.location='{{ route('collectors.index') }}'"
-        style="background: white;"
-        onmouseover="this.style.background='linear-gradient(135deg, #8A2BE2, #00BFFF)'; this.style.color='white';"
-        onmouseout="this.style.background='white'; this.style.color='inherit';"
+        style="background: #914F1E;"
+        onmouseout="this.style.background='#914F1E'; this.style.color='#FFFFFF';"
     >
-        <h2 class="text-xl font-bold group-hover:text-white">Collectors Management</h2>
-        <p class="text-gray-600 group-hover:text-white">Assign tasks, track progress, and manage loan collectors seamlessly.</p>
-        <p class="mt-4 text-sm font-medium text-blue-500 group-hover:text-white">Click to explore Collectors Management</p>
+    <div class="w-full flex justify-center items-center">
+        <div class="w-4/6 flex justify-center items-center bg-white rounded-full p-8">
+            <img src="./dashboard_images/personal.png" alt="Icon 1" class="w-[130px]">
+        </div>
+    </div>
+    <h2 class="text-xl font-bold group-hover:text-white roboto- text-center">Collectors Management</h2>
+
+        <p class="text-center roboto- text-sm  group-hover:text-white">Assign tasks, track progress, and manage loan collectors seamlessly.</p>
     </div>
 
     <!-- Settings -->
     <div 
-        class="bg-white p-6 shadow rounded-3xl hover:shadow-lg transition min-h-[250px] cursor-pointer group" 
+        class=" p-6 shadow rounded-lg hover:shadow-lg transition space-y-4 cursor-pointer text-white group" 
         onclick="window.location='{{ route('profile.edit') }}'"
-        style="background: white;"
-        onmouseover="this.style.background='linear-gradient(135deg, #8A2BE2, #00BFFF)'; this.style.color='white';"
-        onmouseout="this.style.background='white'; this.style.color='inherit';"
+        style="background: #CB9DF0;"
+        onmouseout="this.style.background='#CB9DF0'; this.style.color='#FFFFFF';"
     >
-        <h2 class="text-xl font-bold group-hover:text-white">Settings</h2>
-        <p class="text-gray-600 group-hover:text-white">Customize your application settings and adjust preferences effortlessly.</p>
-        <p class="mt-4 text-sm font-medium text-blue-500 group-hover:text-white">Click to explore Settings</p>
+    <div class="w-full flex justify-center items-center">
+        <div class="w-4/6 flex justify-center items-center bg-white rounded-full p-8">
+            <img src="./dashboard_images/user-setting.png" alt="Icon 1" class="w-[130px]">
+        </div>
+    </div>
+    <h2 class="text-xl font-bold roboto- text-center group-hover:text-white">Settings</h2>
+
+        <p class="group-hover:text-white text-sm  roboto- text-center">Customize your application settings and adjust preferences effortlessly.</p>
     </div>
 
     <!-- Reports -->
     <div 
-        class="bg-white p-6 shadow rounded-3xl hover:shadow-lg transition min-h-[250px] cursor-pointer group" 
+        class="p-6 shadow rounded-lg hover:shadow-lg transition cursor-pointer space-y-4 text-white group" 
         onclick="window.location='{{ route('reports.index') }}'"
-        style="background: white;"
-        onmouseover="this.style.background='linear-gradient(135deg, #8A2BE2, #00BFFF)'; this.style.color='white';"
-        onmouseout="this.style.background='white'; this.style.color='inherit';"
+        style="background: #FF8000;"
+        onmouseout="this.style.background='#FF8000'; this.style.color='#FFFFFF';"
     >
-        <h2 class="text-xl font-bold group-hover:text-white">Reports</h2>
-        <p class="text-gray-600 group-hover:text-white">Generate detailed reports and insights to support decision-making.</p>
-        <p class="mt-6 text-sm font-medium text-blue-500 group-hover:text-white">Click to explore Reports</p>
+    <div class="w-full flex justify-center items-center">
+        <div class="w-4/6 flex justify-center items-center bg-white rounded-full p-8">
+            <img src="./dashboard_images/health-check.png" alt="Icon 1" class="w-[130px]">
+        </div>
+    </div>
+    <h2 class="text-xl nunito-sans- text-center font-bold group-hover:text-white">Reports</h2>
+
+        <p class="roboto- text-sm  text-center group-hover:text-white">Generate detailed reports and insights to support decision-making.</p>
     </div>
 </div>
 @endsection

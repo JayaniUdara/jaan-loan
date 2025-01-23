@@ -25,39 +25,41 @@
 
     <form method="POST" action="{{ route('loans.store') }}">
         @csrf
-
-        <!-- Loan Details -->
-              <!-- Loan Custom ID -->
-              <div class="mb-4">
-                <label for="loan_custom_id" class="block text-sm font-medium">Loan Custom ID</label>
-                <input 
-                    type="text" 
-                    id="loan_custom_id" 
-                    name="loan_custom_id" 
-                    class="mt-1 block w-full border-gray-300 rounded-md" 
-                    placeholder="Enter a unique loan ID" 
-                >
-            </div>
- <!-- Customer ID -->
- <div class="mb-4">
-    <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
-
-
-    <select id="customer_id" name="customer_id" class="mt-1 block w-full border-gray-300 rounded-md searchable">
-        <option value="">Select Customer</option>
-        @foreach($customers as $customer)
-            <option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
-        @endforeach
-    </select>
+<div class="w-full flex space-x-4">
+ <!-- Loan Custom ID -->
+ <div class="w-1/2 mb-4">
+    <label for="loan_custom_id" class="block text-sm font-medium">Loan Custom ID</label>
+    <input 
+        type="text" 
+        id="loan_custom_id" 
+        name="loan_custom_id" 
+        class="mt-1 block w-full border-gray-300 rounded-md" 
+        placeholder="Enter a unique loan ID" 
+    >
 </div>
-   <!-- Loan Amount -->
-   <div class="mb-4">
+<!-- Customer ID -->
+<div class="w-1/2 mb-4">
+<label for="customer_id" class="block text-sm font-medium">Customer ID</label>
+
+
+<select id="customer_id" name="customer_id" class="mt-1 block w-full border-gray-300 rounded-md searchable">
+<option value="">Select Customer</option>
+@foreach($customers as $customer)
+<option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
+@endforeach
+</select>
+</div>
+</div>
+        <!-- Loan Details -->
+    <div class="w-full flex space-x-4">
+         <!-- Loan Amount -->
+   <div class="w-1/2 mb-4">
     <label for="amount" class="block text-sm font-medium">Loan Amount</label>
     <input type="number" step="0.01" id="amount" name="amount" class="mt-1 block w-full border-gray-300 rounded-md" required>
 </div>
 
 <!-- Total with Interest -->
-<div class="mb-4">
+<div class="w-1/2 mb-4">
     <label for="total_with_interest" class="block text-sm font-medium">Total with Interest (2 Months at 10% per month)</label>
     <input 
         type="text" 
@@ -66,9 +68,11 @@
         class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100" 
         readonly>
 </div>
+    </div>
 
-<!-- Installment Duration -->
-<div class="mb-4">
+    <div class="w-full flex space-x-4">
+        <!-- Installment Duration -->
+<div class="w-1/2 mb-4">
     <label for="installment_duration" class="block text-sm font-medium">Installment Duration</label>
     <select id="installment_duration" name="installment_duration" class="mt-1 block w-full border-gray-300 rounded-md" required>
         <option value="daily">Daily</option>
@@ -77,7 +81,7 @@
 </div>
 
 <!-- Installment Amount -->
-<div class="mb-4">
+<div class="w-1/2 mb-4">
     <label for="installment_amount" class="block text-sm font-medium">Installment Amount</label>
     <input 
         type="text" 
@@ -86,6 +90,7 @@
         class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100" 
         readonly>
 </div>
+    </div>
 
         <!-- Guarantors Details -->
         <h2 class="text-lg font-bold mt-6 mb-4">Guarantors</h2>

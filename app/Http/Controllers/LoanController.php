@@ -108,6 +108,7 @@ class LoanController extends Controller
                 'customer_id' => $validatedData['customer_id'],
                 'amount' => $validatedData['amount'],
                 'interest_rate' => 10,
+                'total_due' => 0,
                 'installment_duration' => $installment_duration,
                 'total_installments' => $numInstallments,
                 'remaining_installments' => $numInstallments,

@@ -2,11 +2,16 @@
 
 @section('content')
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-6 shadow rounded hover:shadow-lg transition">
-                <h2 class="text-xl font-bold">Daily Collections</h2>
-                <p class="text-gray-600">View and manage daily collections.</p>
-                <a href="{{ route('mobile.index') }}" class="text-blue-500 mt-4 block">Go to Daily Collections</a>
+            <div class="p-6 shadow rounded hover:shadow-lg cursor-pointer transition roboto- text-white" style="background: #C62E2E;" onclick="window.location='{{ route('mobile.index') }}'">
+                <div class="w-full flex justify-center items-center">
+                    <div class=" flex justify-center items-center bg-white rounded-full p-8">
+                        <img src="./dashboard_images/cash-on-delivery.png" alt="Icon 1" class="w-[130px]">
+                    </div>
+                </div>
+                <h2 class="text-xl font-bold text-center">Daily Collections</h2>
+                <p class="text-center">View and manage daily collections.</p>
             </div>
+            
     </div>
         
 <script>
