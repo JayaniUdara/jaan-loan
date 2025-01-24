@@ -189,11 +189,11 @@
 
 
 
-<div class="bg-white p-6 shadow-md rounded">
-    <div class="flex justify-between items-center mb-4">
+<div class="w-full bg-white p-6 shadow-md rounded">
+    <div class="flex md:flex-row flex-col justify-between items-center mb-4">
         <h2 class="text-2xl font-bold">Daily Collections</h2>
 
-        <div class="flex justify-center space-x-4 mb-4">
+        <div class="w-full flex justify-center space-x-4 mb-4">
             <!-- Total Collected Today --> <h3 class="text-sm font-medium">Today's Summary</h3>
             <div class="summary-card flex items-center justify-between bg-gray-100 shadow-md p-2 w-56">
                
@@ -247,34 +247,36 @@
             Custom Print
         </button>
     </div>
-
-    <!-- Table -->
-    <table id="daily-collections-table" class="w-full">
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Loan ID</th>
-                <th>Collection Date</th>
-                <th>Amount</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($collections as $collection)
-            <tr>
-                <td>{{ $collection->customer->name }}</td>
-                <td>{{ $collection->loan->loan_custom_id ?? 'N/A'}}</td>
-                <td>{{ $collection->collection_date}}</td>
-                <td>LKR {{ number_format($collection->amount_collected, 2) }}</td>
-                <td>
-                    <span class="{{ $collection->status === 'collected' ? 'text-green-600 font-bold' : 'text-yellow-600 font-bold' }}">
-                        {{ ucfirst($collection->status) }}
-                    </span>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="w-full overflow-x-auto">
+<!-- Table -->
+<table id="daily-collections-table" class="w-full">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Loan ID</th>
+            <th>Collection Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($collections as $collection)
+        <tr>
+            <td>{{ $collection->customer->name }}</td>
+            <td>{{ $collection->loan->loan_custom_id ?? 'N/A'}}</td>
+            <td>{{ $collection->collection_date}}</td>
+            <td>LKR {{ number_format($collection->amount_collected, 2) }}</td>
+            <td>
+                <span class="{{ $collection->status === 'collected' ? 'text-green-600 font-bold' : 'text-yellow-600 font-bold' }}">
+                    {{ ucfirst($collection->status) }}
+                </span>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+</div>
+    
 </div>
 
 <script>

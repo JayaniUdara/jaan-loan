@@ -1,7 +1,7 @@
 @extends('layouts.mobile')
 
 @section('content')
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="p-6 shadow rounded hover:shadow-lg cursor-pointer transition roboto- text-white" style="background: #C62E2E;" onclick="window.location='{{ route('mobile.index') }}'">
                 <div class="w-full flex justify-center items-center">
                     <div class=" flex justify-center items-center bg-white rounded-full p-8">

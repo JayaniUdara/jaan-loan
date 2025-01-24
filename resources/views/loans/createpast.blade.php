@@ -22,10 +22,10 @@
 
     <form method="POST" action="{{ route('loans.store.past') }}">
         @csrf
-
-        <!-- Loan Details -->
+<div class="w-full flex  space-x-4">
+    <!-- Loan Details -->
               <!-- Loan Custom ID -->
-              <div class="mb-4">
+              <div class="w-1/2 mb-4">
                 <label for="loan_custom_id" class="block text-sm font-medium">Loan Custom ID</label>
                 <input
                     type="text"
@@ -52,7 +52,7 @@
 
 
 
-            <div class="mb-4 relative">
+            <div class="w-1/2 mb-4 relative">
                 <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
 
                 <input
@@ -76,16 +76,16 @@
                 </ul>
             </div>
 
-
-
-   <!-- Loan Amount -->
-   <div class="mb-4">
+</div>
+<div class="w-full flex space-x-4">
+<!-- Loan Amount -->
+<div class="w-1/2 mb-4">
     <label for="amount" class="block text-sm font-medium">Loan Amount</label>
     <input type="number" step="0.01" id="amount" name="amount" class="mt-1 block w-full border-gray-300 rounded-md" required>
 </div>
 
 <!-- Total with Interest -->
-<div class="mb-4">
+<div class="w-1/2 mb-4">
     <label for="total_with_interest" class="block text-sm font-medium">Total with Interest (2 Months at 10% per month)</label>
     <input
         type="text"
@@ -95,8 +95,10 @@
         readonly>
 </div>
 
+</div>
+<div class="w-full flex space-x-4">
 <!-- Installment Duration -->
-<div class="mb-4">
+<div class="w-1/2 mb-4">
     <label for="installment_duration" class="block text-sm font-medium">Installment Duration</label>
     <select id="installment_duration" name="installment_duration" class="mt-1 block w-full border-gray-300 rounded-md" required>
         <option value="daily">Daily</option>
@@ -105,7 +107,7 @@
 </div>
 
 <!-- Installment Amount -->
-<div class="mb-4">
+<div class="w-1/2 mb-4">
     <label for="installment_amount" class="block text-sm font-medium">Installment Amount</label>
     <input
         type="text"
@@ -114,37 +116,43 @@
         class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
         readonly>
 </div>
+</div>
 
-   <!-- remaining_installments Amount -->
-   <div class="mb-4">
+<div class="w-full flex space-x-4">
+<!-- remaining_installments Amount -->
+<div class="w-1/2 mb-4">
     <label for="remaining_installments" class="block text-sm font-medium">Remianing instalments (Number of remaining installments)</label>
     <input type="number" step="0.01" id="remaining_installments" name="remaining_installments" class="mt-1 block w-full border-gray-300 rounded-md" required>
 </div>
 
    <!-- remaining_installments Amount -->
-   <div class="mb-4">
+   <div class="w-1/2 mb-4">
     <label for="outstanding_balance" class="block text-sm font-medium">Remaining balance</label>
     <input type="number" step="0.01" id="outstanding_balance" name="outstanding_balance" class="mt-1 block w-full border-gray-300 rounded-md" required>
 </div>
-       <!-- Loan Approved Date -->
-       <div class="mb-4">
-        <label for="loan_approved_date" class="block text-sm font-medium">Loan Approved Date</label>
-        <input
-            type="date"
-            id="loan_approved_date"
-            name="loan_approved_date"
-            class="mt-1 block w-full border-gray-300 rounded-md">
-    </div>
+</div>
+   <div class="w-full flex space-x-4">
+ <!-- Loan Approved Date -->
+ <div class="w-1/2 mb-4">
+    <label for="loan_approved_date" class="block text-sm font-medium">Loan Approved Date</label>
+    <input
+        type="date"
+        id="loan_approved_date"
+        name="loan_approved_date"
+        class="mt-1 block w-full border-gray-300 rounded-md">
+</div>
 
-    <!-- Loan End Date -->
-    <div class="mb-4">
-        <label for="loan_end_date" class="block text-sm font-medium">Loan End Date</label>
-        <input
-            type="date"
-            id="loan_end_date"
-            name="loan_end_date"
-            class="mt-1 block w-full border-gray-300 rounded-md">
-    </div>
+<!-- Loan End Date -->
+<div class="w-1/2 mb-4">
+    <label for="loan_end_date" class="block text-sm font-medium">Loan End Date</label>
+    <input
+        type="date"
+        id="loan_end_date"
+        name="loan_end_date"
+        class="mt-1 block w-full border-gray-300 rounded-md">
+</div>
+   </div>
+      
 
     <!-- Approved By -->
 

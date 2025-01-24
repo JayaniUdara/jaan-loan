@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">Reports</h1>
+    <h1 class="text-2xl font-bold text-[#184E77] mb-6">Reports</h1>
 
     <!-- Analytics Summary -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">

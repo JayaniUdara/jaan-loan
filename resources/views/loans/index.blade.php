@@ -186,9 +186,9 @@
         {{ session('success') ?? session('error') }}
     </div>
 @endif
-<div class="bg-white p-6 shadow-md rounded">
+<div class="w-full bg-white p-6 shadow-md rounded">
 
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex md:flex-row flex-col justify-between items-center mb-4 md:space-y-0 space-y-4">
             <h2 class="text-3xl font-bold text-[#184E77]">Loans</h2>
             <div class="flex justify-right items-right mb-4">
             <a href="{{ route('loans.create.past') }}" class="text-white px-4 py-2 rounded-md" style="background: #184E77">
@@ -199,12 +199,12 @@
             </a>
             </div>
         </div>
-
+<div class="w-full ">
 <!-- Filters -->
 <div class="filters bg-gray-50 rounded-lg shadow-md p-6">
     <h3 class="text-lg font-bold text-gray-700 ">Filters</h3>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+    <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         <!-- Date Filters -->
         <div class="bg-gray-100 p-4 rounded-lg">
             <h4 class="text-md font-semibold text-gray-600">Date</h4>
@@ -251,7 +251,7 @@
         </div>
 
 </div>
-<div class="w-2/3 flex justify-center items-end space-x-4">
+<div class="md:w-2/3 w-full flex justify-center items-end space-x-4">
     <!-- Status Filter -->
     <div class="w-2/3">
         <label for="filter-status" class="block font-medium text-gray-700">Filter by Status</label>
@@ -283,8 +283,10 @@
             </button>
         </div>
 </div>
+</div>
 
 
+<div class="w-full overflow-x-auto">
     <!-- Table -->
     <table id="customers-table" class="table-auto w-full text-sm mt-4 border-collapse border border-gray-300">
         <thead>
@@ -341,6 +343,8 @@
             @endforeach
         </tbody>
     </table>
+</div>
+    
 
 </div>
 

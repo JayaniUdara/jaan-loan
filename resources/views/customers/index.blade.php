@@ -196,7 +196,7 @@
 <!-- Filters -->
 <div class="filters bg-gray-50 rounded-lg shadow-md p-6">
     <h3 class="text-lg font-bold text-gray-700 ">Filters</h3>
-
+<div class="w-full ">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         <!-- Date Filters -->
         <div class="bg-gray-100 p-4 rounded-lg">
@@ -244,6 +244,8 @@
         </div>
 
 </div>
+</div>
+    
 <div class="w-2/3 flex justify-center items-end space-x-4">
     <!-- Status Filter -->
     <div class="w-2/3">
@@ -275,64 +277,66 @@
         </div>
 </div>
 
-
-    <!-- Table -->
-    <table id="customers-table" class="table-auto w-full text-sm mt-4 border-collapse border border-gray-300">
-        <thead>
-            <tr>
-                <th class="border px-4 py-2">Name</th>
-                <th class="border px-4 py-2">ID</th>
-                <th class="border px-4 py-2">Contact</th>
-                <th class="border px-4 py-2">Email</th>
-                <th class="border px-4 py-2">Address</th>
-                <th class="border px-4 py-2">Date of Birth</th>
-                <th class="border px-4 py-2">National ID</th>
-                <th class="border px-4 py-2">Occupation</th>
-                <th class="border px-4 py-2">Monthly Income</th>
-                <th class="border px-4 py-2">Approved</th>
-                <th class="border px-4 py-2">Outstanding Balance</th>
-                <th class="border px-4 py-2">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($customers as $customer)
-            <tr>
-                <td class="border px-4 py-2">{{ $customer->name }}</td>
-                <td class="border px-4 py-2">{{ $customer->id }}</td>
-                <td class="border px-4 py-2">{{ $customer->contact_number }}</td>
-                <td class="border px-4 py-2">{{ $customer->email }}</td>
-                <td class="border px-4 py-2">{{ $customer->address }}</td>
-                <td class="border px-4 py-2">{{ $customer->date_of_birth }}</td>
-                <td class="border px-4 py-2">{{ $customer->national_id }}</td>
-                <td class="border px-4 py-2">{{ $customer->occupation }}</td>
-                <td class="border px-4 py-2">{{ $customer->monthly_income ? 'LKR ' . number_format($customer->monthly_income, 2) : '-' }}</td>
-                <td class="border px-4 py-2">
-                    @if($customer->is_approved)
-                        <span class="text-green-600 font-bold">Approved</span>
-                    @else
-                        <span class="text-red-600 font-bold">Pending</span>
-                        <form action="{{ route('customers.approve', $customer->id) }}" method="POST" class="mt-2">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded-md">Approve</button>
-                        </form>
-                    @endif
-                </td>
-                <td class="border px-4 py-2">
-                    LKR {{ number_format($customer->loans->sum('outstanding_balance'), 2) }}
-                </td>
-                <td class="border px-4 py-2 flex gap-2 justify-center">
-                    <a href="{{ route('customers.edit', $customer->id) }}" class="text-blue-500 hover:underline">✏️ Edit</a>
-                    <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+<div class="w-full overflow-x-auto">
+<!-- Table -->
+<table id="customers-table" class="table-auto w-full text-sm mt-4 border-collapse border border-gray-300">
+    <thead>
+        <tr>
+            <th class="border px-4 py-2">Name</th>
+            <th class="border px-4 py-2">ID</th>
+            <th class="border px-4 py-2">Contact</th>
+            <th class="border px-4 py-2">Email</th>
+            <th class="border px-4 py-2">Address</th>
+            <th class="border px-4 py-2">Date of Birth</th>
+            <th class="border px-4 py-2">National ID</th>
+            <th class="border px-4 py-2">Occupation</th>
+            <th class="border px-4 py-2">Monthly Income</th>
+            <th class="border px-4 py-2">Approved</th>
+            <th class="border px-4 py-2">Outstanding Balance</th>
+            <th class="border px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($customers as $customer)
+        <tr>
+            <td class="border px-4 py-2">{{ $customer->name }}</td>
+            <td class="border px-4 py-2">{{ $customer->id }}</td>
+            <td class="border px-4 py-2">{{ $customer->contact_number }}</td>
+            <td class="border px-4 py-2">{{ $customer->email }}</td>
+            <td class="border px-4 py-2">{{ $customer->address }}</td>
+            <td class="border px-4 py-2">{{ $customer->date_of_birth }}</td>
+            <td class="border px-4 py-2">{{ $customer->national_id }}</td>
+            <td class="border px-4 py-2">{{ $customer->occupation }}</td>
+            <td class="border px-4 py-2">{{ $customer->monthly_income ? 'LKR ' . number_format($customer->monthly_income, 2) : '-' }}</td>
+            <td class="border px-4 py-2">
+                @if($customer->is_approved)
+                    <span class="text-green-600 font-bold">Approved</span>
+                @else
+                    <span class="text-red-600 font-bold">Pending</span>
+                    <form action="{{ route('customers.approve', $customer->id) }}" method="POST" class="mt-2">
                         @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:underline">🗑 Delete</button>
+                        @method('PATCH')
+                        <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded-md">Approve</button>
                     </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                @endif
+            </td>
+            <td class="border px-4 py-2">
+                LKR {{ number_format($customer->loans->sum('outstanding_balance'), 2) }}
+            </td>
+            <td class="border px-4 py-2 flex gap-2 justify-center">
+                <a href="{{ route('customers.edit', $customer->id) }}" class="text-blue-500 hover:underline">✏️ Edit</a>
+                <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-red-500 hover:underline">🗑 Delete</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+</div>
+    
 </div>
 
 <script>

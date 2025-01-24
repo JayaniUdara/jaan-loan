@@ -37,7 +37,7 @@
 </head>
 <body class="bg-gray-100">
     <nav class="p-4 text-white">
-        <div class="container mx-auto flex justify-between items-left">
+        <div class="container mx-auto flex justify-between items-start">
             <a href="{{ route('dashboard') }}" class="block px-4 py-2"><img src="/dashboard_images/white-logo-removebg-preview (1).png" alt="Icon 1" class="w-[130px]"></a>
             
             

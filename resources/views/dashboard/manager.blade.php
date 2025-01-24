@@ -15,7 +15,7 @@
         <img src="./dashboard_images/customer.png" alt="Icon 1" class="w-auto h-auto">
         </div>
 </div>
-<h2 class="text-xl font-bold group-hover:text-white roboto- text-center" style="font-size: 1.25rem;">Customer Management</h2>
+<h2 class="text-xl font-bold group-hover:text-white uppercase roboto- text-center" style="font-size: 1.25rem; font-weight: bold;">Customer Management</h2>
         <p class="group-hover:text-white roboto- text-sm text-center">Easily manage customer details, track history to streamline operations.</p>
     </div>
 
@@ -31,7 +31,7 @@
             <img src="./dashboard_images/signing.png" alt="Icon 1" class="w-[130px]">
         </div>
     </div>
-    <h2 class="text-xl font-bold group-hover:text-white roboto- text-center">Loan Management</h2>
+    <h2 class="text-xl font-bold group-hover:text-white uppercase roboto- text-center" style="font-size: 1.25rem; font-weight: bold;">Loan Management</h2>
 
         <p class="group-hover:text-white roboto- text-sm  text-center">Create, view, and manage loans efficiently with automated calculations and tracking.</p>
     </div>
@@ -48,7 +48,7 @@
             <img src="./dashboard_images/cash-on-delivery.png" alt="Icon 1" class="w-[130px]">
         </div>
     </div>
-    <h2 class="text-xl font-bold roboto- text-center group-hover:text-white">Daily Collections</h2>
+    <h2 class="text-xl font-bold roboto- text-center uppercase group-hover:text-white" style="font-size: 1.25rem; font-weight: bold;">Daily Collections</h2>
 
         <p class="group-hover:text-white roboto- text-sm  text-center">Monitor and manage daily collection records with ease and accuracy.</p>
     </div>
@@ -65,7 +65,7 @@
             <img src="./dashboard_images/personal.png" alt="Icon 1" class="w-[130px]">
         </div>
     </div>
-    <h2 class="text-xl font-bold group-hover:text-white roboto- text-center">Collectors Management</h2>
+    <h2 class="text-xl group-hover:text-white roboto- uppercase text-center" style="font-size: 1.25rem; font-weight: bold;">Collector Management</h2>
 
         <p class="text-center roboto- text-sm  group-hover:text-white">Assign tasks, track progress, and manage loan collectors seamlessly.</p>
     </div>
@@ -82,7 +82,7 @@
             <img src="./dashboard_images/user-setting.png" alt="Icon 1" class="w-[130px]">
         </div>
     </div>
-    <h2 class="text-xl font-bold roboto- text-center group-hover:text-white">Settings</h2>
+    <h2 class="text-xl font-bold roboto- text-center uppercase group-hover:text-white" style="font-size: 1.25rem; font-weight: bold;">Settings</h2>
 
         <p class="group-hover:text-white text-sm  roboto- text-center">Customize your application settings and adjust preferences effortlessly.</p>
     </div>
@@ -99,7 +99,7 @@
             <img src="./dashboard_images/health-check.png" alt="Icon 1" class="w-[130px]">
         </div>
     </div>
-    <h2 class="text-xl nunito-sans- text-center font-bold group-hover:text-white">Reports</h2>
+    <h2 class="text-xl nunito-sans- text-center uppercase font-bold group-hover:text-white" style="font-size: 1.25rem; font-weight: bold;">Reports</h2>
 
         <p class="roboto- text-sm  text-center group-hover:text-white">Generate detailed reports and insights to support decision-making.</p>
     </div>
