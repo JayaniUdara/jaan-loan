@@ -570,11 +570,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle the selection of a customer from the suggestions
     document.addEventListener('click', function(event) {
+      
         if (event.target && event.target.matches("li[data-id]")) {
             const selectedCustomerId = event.target.getAttribute('data-id');
+        
             const customerInput = document.getElementById('customer_id');
-            customerInput.value = event.target.innerText; // Set value to selected customer
-            customerInput.setAttribute('data-id', selectedCustomerId); // Optionally set data-id
+            customerInput.value = event.target.getAttribute('data-id'); // Set value to selected customer
+         //   customerInput.setAttribute('data-id', selectedCustomerId); // Optionally set data-id
             hideCustomerSuggestions(); // Hide suggestions after selection
         }
     });

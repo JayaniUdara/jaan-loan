@@ -139,7 +139,7 @@ class LoanController extends Controller
 
 
     public function storePast(Request $request)
-    {
+    {//dd($request->all());
         // Validate the incoming data
         $validatedData = $request->validate([
             'loan_custom_id' => 'required|string|max:255|unique:loans,loan_custom_id',

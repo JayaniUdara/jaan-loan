@@ -51,7 +51,29 @@
             <option value="{{ $customer->id }}">{{ $customer->id }} - {{ $customer->name }}</option>
         @endforeach
     </select>
-</div>
+</div> --}}
+
+    <div class="mb-4">
+        <label for="customer_id" class="block text-sm font-medium">Customer ID</label>
+        <div class="relative">
+            <input
+                type="text"
+                id="customer_search"
+                class="mt-1 block w-full border-gray-300 rounded-md"
+                placeholder="Search by Customer ID or Name"
+                onfocus="showCustomerDropdown()"
+                oninput="filterCustomers(this.value)"
+            />
+            <ul id="customer-dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md hidden max-h-60 overflow-auto">
+                <!-- Customer options will be dynamically populated here -->
+            </ul>
+            <input type="hidden" id="customer_id" name="customer_id" />
+        </div>
+    </div>
+
+
+
+
    <!-- Loan Amount -->
    <div class="mb-4">
     <label for="amount" class="block text-sm font-medium">Loan Amount</label>
@@ -59,7 +81,7 @@
 </div>
 
 <!-- Total with Interest -->
-<div class="w-1/2 mb-4">
+<div class="mb-4">
     <label for="total_with_interest" class="block text-sm font-medium">Total with Interest (2 Months at 10% per month)</label>
     <input
         type="text"
@@ -68,11 +90,9 @@
         class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
         readonly>
 </div>
-    </div>
 
-    <div class="w-full flex space-x-4">
-        <!-- Installment Duration -->
-<div class="w-1/2 mb-4">
+<!-- Installment Duration -->
+<div class="mb-4">
     <label for="installment_duration" class="block text-sm font-medium">Installment Duration</label>
     <select id="installment_duration" name="installment_duration" class="mt-1 block w-full border-gray-300 rounded-md" required>
         <option value="daily">Daily</option>
@@ -81,7 +101,7 @@
 </div>
 
 <!-- Installment Amount -->
-<div class="w-1/2 mb-4">
+<div class="mb-4">
     <label for="installment_amount" class="block text-sm font-medium">Installment Amount</label>
     <input
         type="text"
@@ -90,7 +110,6 @@
         class="mt-1 block w-full border-gray-300 rounded-md bg-gray-100"
         readonly>
 </div>
-    </div>
 
         <!-- Guarantors Details -->
         <h2 class="text-lg font-bold mt-6 mb-4">Guarantors</h2>
