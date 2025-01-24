@@ -17,8 +17,8 @@ class DailyCollectionController extends Controller
     // Get today's date at the start of the day
     $today = Carbon::now()->startOfDay();
 
-    $collections = DailyCollection::with('loan')->get();
-
+    $collections = DailyCollection::with(['loan', 'customer'])->get();
+//dd($collections);
 
             // Fetch collections for today with relationships
     $todayscollections = DailyCollection::with('loan')
