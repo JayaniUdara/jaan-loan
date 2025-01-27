@@ -25,7 +25,7 @@ class CreateLoansTable extends Migration
             $table->integer('installment_duration'); // installment_duration in days
             $table->integer('total_installments'); // total_installments
             $table->integer('remaining_installments'); // total_installments
-            $table->enum('status', ['pending', 'approved'])->default('pending'); // Loan status
+            $table->enum('status', ['pending', 'approved','settled'])->default('pending'); // Loan status
 
             // Approval details
             $table->boolean('is_approved')->default(false); // Approval status

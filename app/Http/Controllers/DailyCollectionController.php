@@ -27,12 +27,12 @@ class DailyCollectionController extends Controller
     // Calculate total cash collected today (status = 'collected')
     $totalCollected = $todayscollections
         ->where('status', 'collected')
-        ->sum('amount'); // Assuming 'amount' is the column for collection value
+        ->sum('amount_collected'); // Assuming 'amount' is the column for collection value
 
     // Calculate total pending collections today (status = 'pending')
     $totalPending = $todayscollections
         ->where('status', 'pending')
-        ->sum('amount');
+        ->sum('amount_collected');
 
     // Pass data to the view
     return view('daily_collections.index', [
@@ -82,6 +82,7 @@ class DailyCollectionController extends Controller
 
 
                     $loan->total_due = $totalPendingAmount + $installmentAmount +$interest; // Add the current installment amount
+                
                     $loan->save();
                 }
 

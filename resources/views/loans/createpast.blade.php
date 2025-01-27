@@ -310,10 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
     document.addEventListener('DOMContentLoaded', () => {
       const customers = @json($customers);
+      const remainingInstallmentsInput = document.getElementById('remaining_installments');
       const amountInput = document.getElementById('amount');
       const totalWithInterestInput = document.getElementById('total_with_interest');
       const installmentDurationSelect = document.getElementById('installment_duration');
       const installmentAmountInput = document.getElementById('installment_amount');
+      const outstandingBalanceInput = document.getElementById('outstanding_balance');
+    const loanApprovedDateInput = document.getElementById('loan_approved_date');
+    const loanEndDateInput = document.getElementById('loan_end_date');
 
       // Interest calculation functions
       const calculateTotalWithInterest = (amount) => {
@@ -348,6 +352,32 @@ document.addEventListener('DOMContentLoaded', () => {
           const installmentAmount = calculateInstallmentAmount(totalWithInterest, duration);
           installmentAmountInput.value = installmentAmount.toFixed(2);
       });
+
+      remainingInstallmentsInput.addEventListener('input', () => {
+        const remainingInstallments = parseInt(remainingInstallmentsInput.value) || 0;
+        const installmentAmount = parseFloat(installmentAmountInput.value) || 0;
+        const remainingBalance = remainingInstallments * installmentAmount;
+        outstandingBalanceInput.value = remainingBalance.toFixed(2);
+    });
+
+    // Update Loan End Date when Loan Approved Date is Selected
+    loanApprovedDateInput.addEventListener('change', () => {
+        const approvedDate = new Date(loanApprovedDateInput.value);
+        const duration = installmentDurationSelect.value;
+        let daysToAdd = 0;
+
+        if (duration === 'daily') {
+            daysToAdd = parseInt(remainingInstallmentsInput.value) || 0;
+        } else if (duration === 'weekly') {
+            daysToAdd = (parseInt(remainingInstallmentsInput.value) || 0) * 7;
+        }
+
+        if (!isNaN(approvedDate.getTime()) && daysToAdd > 0) {
+            approvedDate.setDate(approvedDate.getDate() + daysToAdd);
+            loanEndDateInput.value = approvedDate.toISOString().split('T')[0];
+        }
+    });
+
 
       // Guarantor functions
       const initializeGuarantorListeners = (guarantorItem) => {
