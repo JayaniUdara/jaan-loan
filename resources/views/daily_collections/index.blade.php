@@ -179,9 +179,9 @@
 }
 </style>
 
-
 @if(session('success') || session('error'))
-    <div id="notification" class="bg-gradient-to-r from-green-400 to-blue-500">
+    <div id="notification" class="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 px-6 py-3 rounded-lg shadow-lg text-white font-semibold z-50"
+        style="display: none; background-color: {{ session('success') ? '#4caf50' : '#f44336' }};">
         {{ session('success') ?? session('error') }}
     </div>
 @endif
@@ -222,18 +222,19 @@
     </div>
     
 <!-- Approve Button -->
-@if($collections->where('collection_date', now()->toDateString())->where('status', '!=', 'approved')->isNotEmpty())
+<!-- Approve Button -->
+@if($collections->where('collection_date', now()->toDateString())->where('is_approved', '!=', 1)->isNotEmpty())
     <form action="{{ route('daily_collections.approve') }}" method="POST">
         @csrf
         <input type="hidden" name="approved_by" value="{{ auth()->id() }}">
         <div class="flex justify-between items-center mb-4">
-        <button type="submit" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
-            Approve Today's Records
-        </button>
+            <button type="submit" class="text-white px-4 py-2 rounded-md" style="background: linear-gradient(135deg, #8A2BE2, #00BFFF);">
+                Approve Today's Records
+            </button>
         </div>
     </form>
 @else
-    <div class="text-green-600 font-bold">Today's records are already approved.</div>
+    <div class="text-green-600 font-bold">All records for today are already approved.</div>
 @endif
 
     <!-- Filters -->
@@ -316,6 +317,18 @@
             $('#filter-date').val('');
             table.search('').columns().search('').draw(); // Reset all filters
         });
+    });
+
+    
+document.addEventListener('DOMContentLoaded', function () {
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.style.display = 'block';
+            notification.style.animation = 'slideDown 0.5s ease, slideUp 0.5s ease 3s';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3500); // 3.5 seconds (time for animation + display)
+        }
     });
 </script>
 

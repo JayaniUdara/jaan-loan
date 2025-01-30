@@ -48,8 +48,7 @@ class MobileController extends Controller
             'amount_collected' => $request->amount_collected,
             'status' => $request->status,
             'notes' => $request->notes,
-            'approved_by' => auth()->id(),
-            'is_approved' => $request->status === 'collected' ? true : false,
+           
         ]
     );
 

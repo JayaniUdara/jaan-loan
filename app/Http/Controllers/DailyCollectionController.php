@@ -52,7 +52,7 @@ class DailyCollectionController extends Controller
     
 
     private function updateLoansTotalDue()
-    {
+    {//dd('test');
         $loans = Loan::all();
     
         foreach ($loans as $loan) {
@@ -82,21 +82,39 @@ class DailyCollectionController extends Controller
 
 
                     $loan->total_due = $totalPendingAmount + $installmentAmount +$interest; // Add the current installment amount
-                
                     $loan->save();
                 }
 
 
             }
-    
-            // Update the loan's total due
+    // Retrieve today's collected amounts related to the loan
+$collectedToday = DailyCollection::where('loan_id', $loan->id)
+->where('status', 'collected')
+->whereDate('updated_at', today())
+->get(); // Fetch the records
+
+// Ensure we get the actual numeric value of outstanding_balance
+$orig_outstanding_balance = (float) $loan->getAttribute('outstanding_balance');
+
+// Calculate total collected amount for today
+$collectedAmount = $collectedToday->sum('amount_collected'); // Sum up the collected amounts
+dd($collectedAmount);
+// Update outstanding balance by reducing today's collected amount
+$loan->outstanding_balance = max($orig_outstanding_balance - $collectedAmount, 0); // Prevent negative balance
+
+// Save the updated loan record
+$loan->save();
 
         }
+
+        return redirect()->route('daily-collections.index')->with('success', "Collections have been approved successfully.");
+
+
     }
     
 
     public function approveTodaysCollections(Request $request)
-    {
+    {//dd($request->all());
         $request->validate([
             'approved_by' => 'required|exists:users,id', // Ensure the approver is a valid user
         ]);
@@ -106,11 +124,12 @@ class DailyCollectionController extends Controller
         $updatedCount = DailyCollection::whereDate('collection_date', today())
             ->update([
                 'is_approved' => '1',
-                'approved_by' => $request->approved_by,
+                'approved_by' => auth()->id(),
             ]);
     
             $this->updateLoansTotalDue();
-        return redirect()->back()->with('success', "$updatedCount collections have been approved.");
+            return redirect()->route('daily-collections.index')->with('success', "Collections have been approved successfully.");
+
     }
     public function storePast(Request $request)
     {

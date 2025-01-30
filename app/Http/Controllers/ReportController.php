@@ -13,22 +13,28 @@ class ReportController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Total number of loans
-        $totalLoans = Loan::count();
+        // Get date range or set default (current month)
+        $startDate = $request->input('start_date', now()->startOfMonth()->toDateString());
+        $endDate = $request->input('end_date', now()->toDateString());
 
-        // Total number of customers
-        $totalCustomers = Customer::count();
+        // Filtered Loans
+        $totalLoans = Loan::whereBetween('created_at', [$startDate, $endDate])->count();
 
-        // Total outstanding loan amount
-        $totalOutstandingLoans = Loan::sum('outstanding_balance');
+        // Filtered Customers
+        $totalCustomers = Customer::whereBetween('created_at', [$startDate, $endDate])->count();
 
-        // Total dues
-        $totalDues = Loan::sum('total_due');
+        // Filtered Outstanding Loan Amount
+        $totalOutstandingLoans = Loan::whereBetween('created_at', [$startDate, $endDate])->sum('outstanding_balance');
 
-        // Total daily collections
-        $totalCollections = DailyCollection::where('status', 'collected')->sum('amount_collected');
+        // Filtered Total Dues
+        $totalDues = Loan::whereBetween('created_at', [$startDate, $endDate])->sum('total_due');
+
+        // Filtered Total Collections
+        $totalCollections = DailyCollection::whereBetween('collection_date', [$startDate, $endDate])
+            ->where('status', 'collected')
+            ->sum('amount_collected');
 
         return view('reports.index', compact(
             'totalLoans',
