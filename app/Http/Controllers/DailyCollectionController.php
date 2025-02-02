@@ -98,7 +98,7 @@ $orig_outstanding_balance = (float) $loan->getAttribute('outstanding_balance');
 
 // Calculate total collected amount for today
 $collectedAmount = $collectedToday->sum('amount_collected'); // Sum up the collected amounts
-dd($collectedAmount);
+//dd($collectedAmount);
 // Update outstanding balance by reducing today's collected amount
 $loan->outstanding_balance = max($orig_outstanding_balance - $collectedAmount, 0); // Prevent negative balance
 
@@ -158,7 +158,9 @@ $loan->save();
                 $loan = Loan::findOrFail($validatedData['loan_id']);
 
                 // Update outstanding balance and remaining installments
+                if ($validatedData['status'] === 'collected') {
                 $loan->outstanding_balance = max(0, $loan->outstanding_balance - $validatedData['amount_collected']);
+                }
                 $loan->remaining_installments = max(0, $loan->remaining_installments - 1);
         
                 $loan->save();

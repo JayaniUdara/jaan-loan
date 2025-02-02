@@ -112,7 +112,7 @@ class LoanController extends Controller
                 'installment_duration' => $installment_duration,
                 'total_installments' => $numInstallments,
                 'remaining_installments' => $numInstallments,
-                'outstanding_balance' => $validatedData['amount'], // Default to full amount
+                'outstanding_balance' => $totalWithInterest, // Default to full amount
             ]);
 
             // Loop through each guarantor and attach to the loan
@@ -295,7 +295,7 @@ class LoanController extends Controller
             $remainingDays = ($loan->installment_duration + 1) * $loan->total_installments;
             $totalInterest = $dailyInterest * $remainingDays;
             $installmentAmount =  ($totalAmount + $totalInterest)/$loan->total_installments;
-
+$loanInsDuration = $loan->installment_duration;
 
             // Create collection records for each date
             for ($i = 1; $i <= $total; $i++) {
@@ -305,7 +305,7 @@ class LoanController extends Controller
                     'customer_id' => $loan->customer_id,
                     'amount_collected' => $installmentAmount,
                     'status' => 'pending',
-                    'collection_date' => $startDate->copy()->addDays($i * 2),
+                    'collection_date' => $startDate->copy()->addDays($i * $loanInsDuration),
                     'notes' => 'null'
                 ]);
             }

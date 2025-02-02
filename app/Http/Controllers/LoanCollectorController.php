@@ -43,7 +43,7 @@ class LoanCollectorController extends Controller
 
     // Mark a collection as completed
     public function markCollection(Request $request, $id)
-    {
+    {//dd($request, $id);
         $request->validate([
             'status' => 'required|in:collected,missed',
             'notes' => 'nullable|string',
