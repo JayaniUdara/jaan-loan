@@ -233,6 +233,13 @@
             </button>
         </div>
     </form>
+
+    <form action="{{ route('daily-collections.skip-today') }}" method="POST" class="mb-4">
+        @csrf
+        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Skip Today's Collection
+        </button>
+    </form>
 @else
     <div class="text-green-600 font-bold">All records for today are already approved.</div>
 @endif

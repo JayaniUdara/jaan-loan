@@ -295,7 +295,7 @@
                 <th class="border px-4 py-2">Loan ID</th>
                 <th class="border px-4 py-2">Loan Amount</th>
                 <th class="border px-4 py-2">Outstanding Balance</th>
-                <th class="border px-4 py-2">Interest Rate (%)</th>
+                <th class="border px-4 py-2">Total Due</th>
                 <th class="border px-4 py-2">Installment Duration (Days)</th>
                 <th class="border px-4 py-2">Total Installments</th>
                 <th class="border px-4 py-2">Remaining Installments</th>
@@ -311,7 +311,7 @@
                 <td class="border px-4 py-2">{{ $loan->loan_custom_id }}</td>
                 <td class="border px-4 py-2">LKR {{ number_format($loan->amount, 2) }}</td>
                 <td class="border px-4 py-2">LKR {{ number_format($loan->outstanding_balance, 2) }}</td>
-                <td class="border px-4 py-2">{{ number_format($loan->interest_rate, 2) }}</td>
+                <td class="border px-4 py-2">{{ number_format($loan->total_due, 2) }}</td>
                 <td class="border px-4 py-2">{{ $loan->installment_duration }}</td>
                 <td class="border px-4 py-2">{{ $loan->total_installments }}</td>
                 <td class="border px-4 py-2">{{ $loan->remaining_installments }}</td>

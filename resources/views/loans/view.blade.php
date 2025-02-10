@@ -26,6 +26,12 @@
                     {{ $loan->is_approved ? 'Approved' : 'Pending' }}
                 </span>
             </p>
+
+            <p><span class="font-semibold text-gray-700">Total Due Amount:</span> LKR {{ number_format($loan->total_due, 2) }}</p>
+            <p><span class="font-semibold text-gray-700">Last Paid Date:</span> {{ $loan->last_paid_date ?? 'N/A' }}</p>
+            <p><span class="font-semibold text-gray-700">Last Paid Amount:</span> LKR {{ number_format($loan->last_paid_amount, 2) }}</p>
+            <p><span class="font-semibold text-gray-700">Unpaid Installments Count:</span> {{ $loan->unpaid_installments_count }}</p>
+     
         </div>
 
         <!-- Guarantors -->

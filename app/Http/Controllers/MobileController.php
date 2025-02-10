@@ -9,20 +9,30 @@ use Carbon\Carbon;
 
 class MobileController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Get today's date at start of day for comparison
         $today = Carbon::now()->startOfDay();
-        
-        $collections = DailyCollection::with(['customer'])
+    
+        // Get filter and sort parameters
+        $status = $request->input('status');
+        $sortBy = $request->input('sort_by', 'loan_id'); // Default sorting by Loan ID
+    
+        // Query collections with filtering and sorting
+        $collections = DailyCollection::with(['customer', 'loan'])
             ->whereDate('collection_date', $today)
+            ->when($status, function ($query, $status) {
+                return $query->where('status', $status);
+            })
+            ->orderBy(
+                $sortBy == 'customer' ? 'customer_id' : ($sortBy == 'amount_due' ? 'amount_collected' : $sortBy), 
+                'asc'
+            )
             ->get();
-            
-        
-        return view('mobile.index', [   
-            'collections' => $collections
-        ]);
+    
+        return view('mobile.index', compact('collections'));
     }
+    
     
     public function store(Request $request)
 { //dd($request->all());

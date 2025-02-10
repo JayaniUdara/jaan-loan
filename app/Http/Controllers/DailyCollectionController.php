@@ -7,6 +7,7 @@ use App\Models\DailyCollection;
 use App\Models\Loan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DailyCollectionController extends Controller
 {
@@ -169,7 +170,50 @@ $loan->save();
     }
     
 
+    public function skipToday(Request $request)
+    {
+        $today = now()->toDateString();
+        $collections = DailyCollection::where('collection_date', $today)->get();
+    
+        if ($collections->isEmpty()) {
+            return redirect()->route('daily-collections.index')->with('error', 'No collections found for today.');
+        }
+    
+        try {
+            DB::beginTransaction();
+    
+            // Update today's collections by shifting collection_date by one day
+       
+    
+            // Fetch the affected loan IDs
+            $loanIds = $collections->pluck('loan_id')->unique();
+    
+            foreach ($loanIds as $loanId) {
+                $futureCollections = DailyCollection::where('loan_id', $loanId)
+                    ->where('collection_date', '>', $today)
+                    ->orderBy('collection_date', 'asc')
+                    ->get();
+    
+                foreach ($futureCollections as $collection) {
+                    $collection->collection_date = Carbon::parse($collection->collection_date)->addDay();
+                    $collection->save();
+                }
+            }
 
+            foreach ($collections as $collection) {
+                $collection->collection_date = Carbon::parse($collection->collection_date)->addDay();
+                $collection->save();
+            }
+    
+            DB::commit();
+            return redirect()->route('daily-collections.index')->with('success', 'Today’s collections skipped successfully, and future collections adjusted.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('daily-collections.index')->with('error', 'Failed to skip today’s collections: ' . $e->getMessage());
+        }
+    }
+    
+    
 
     public function store(Request $request)
     {

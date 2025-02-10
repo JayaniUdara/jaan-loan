@@ -31,7 +31,19 @@ class LoanController extends Controller
     }
     public function view($id)
     {
-        $loan = Loan::with('guarantors', 'customer', 'approvedBy')->findOrFail($id);
+        $loan = Loan::with('guarantors', 'customer', 'approvedBy')
+            ->withCount(['dailyCollections as unpaid_installments_count' => function ($query) {
+                $query->where('status', 'pending');
+            }])
+            ->with(['dailyCollections' => function ($query) {
+                $query->where('status', 'collected')->orderBy('collection_date', 'desc')->limit(1);
+            }])
+            ->findOrFail($id);
+        
+        $lastCollection = $loan->dailyCollections->first();
+        $loan->last_paid_date = $lastCollection ? $lastCollection->collection_date : null;
+        $loan->last_paid_amount = $lastCollection ? $lastCollection->amount_collected : null;
+        
         return view('loans.view', compact('loan'));
     }
 
@@ -297,8 +309,12 @@ class LoanController extends Controller
             $installmentAmount =  ($totalAmount + $totalInterest)/$loan->total_installments;
 $loanInsDuration = $loan->installment_duration;
 
+
+$lastCollectionDate = null;
             // Create collection records for each date
             for ($i = 1; $i <= $total; $i++) {
+                $collectionDate = $startDate->copy()->addDays($i * $loanInsDuration);
+                $lastCollectionDate = $collectionDate;
                 DailyCollection::create([
                     'loan_id' => $loan->id,
                     'user_id' => auth()->id(),
@@ -309,7 +325,9 @@ $loanInsDuration = $loan->installment_duration;
                     'notes' => 'null'
                 ]);
             }
-
+            if ($lastCollectionDate) {
+                $loan->update(['loan_end_date' => $lastCollectionDate]);
+            }
 
             return redirect()
                 ->route('loans.index')

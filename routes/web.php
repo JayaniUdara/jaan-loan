@@ -57,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/daily-collections/store/past', [DailyCollectionController::class, 'storePast'])->name('daily_collections.storePast');
 
         Route::post('/daily-collections/approve', [DailyCollectionController::class, 'approveTodaysCollections'])->name('daily_collections.approve');
+
+        Route::post('/daily-collections/skip-today', [DailyCollectionController::class, 'skipToday'])->name('daily-collections.skip-today');
+
         //collector management
         Route::get('/daily-collections', [DailyCollectionController::class, 'index'])->name('daily-collections.index');
         Route::post('/daily-collections/mark', [DailyCollectionController::class, 'markPayment'])->name('daily-collections.mark');

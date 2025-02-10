@@ -10,11 +10,30 @@
     @endif
 <div class="w-full">
     <h2 class="text-2xl font-bold mb-4 text-[#184E77]">Daily Collections</h2>
+    <form method="GET" action="{{ route('mobile.index') }}" class="mb-4 flex flex-col sm:flex-row gap-2">
+        <select name="status" class="border rounded p-2 w-full sm:w-auto">
+            <option value="">All Statuses</option>
+            <option value="collected" {{ request('status') == 'collected' ? 'selected' : '' }}>Collected</option>
+            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+        </select>
+        
+        <select name="sort_by" class="border rounded p-2 w-full sm:w-auto">
+            <option value="loan_id" {{ request('sort_by') == 'loan_id' ? 'selected' : '' }}>Sort by Loan ID</option>
+            <option value="customer" {{ request('sort_by') == 'customer' ? 'selected' : '' }}>Sort by Customer</option>
+            <option value="amount_due" {{ request('sort_by') == 'amount_due' ? 'selected' : '' }}>Sort by Amount Due</option>
+            <option value="status" {{ request('sort_by') == 'status' ? 'selected' : '' }}>Sort by Status</option>
+        </select>
+        
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Apply Filters
+        </button>
+    </form>
     <div class="w-full overflow-x-auto">
         <table class="table-auto w-full text-sm">
             <thead>
                 <tr>
                     <th class="border px-4 py-2">Customer</th>
+                    <th class="border px-4 py-2">Loan ID</th>
                     <th class="border px-4 py-2">Amount Due</th>
                     <th class="border px-4 py-2">Status</th>
                     <th class="border px-4 py-2">Actions</th>
@@ -24,6 +43,7 @@
             @foreach($collections as $collection)
                 <tr>
                     <td class="border px-4 py-2">{{ $collection->customer->name }}</td>
+                    <td class="border px-4 py-2">{{ $collection->loan->loan_custom_id }}</td>
                     <td class="border px-4 py-2">{{ number_format($collection->amount_collected, 2) }}</td>
                     <td class="border px-4 py-2">
                         <span class="{{ $collection->status === 'collected' ? 'text-green-500' : 'text-yellow-500' }}">
