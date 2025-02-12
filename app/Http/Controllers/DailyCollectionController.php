@@ -102,6 +102,7 @@ $collectedAmount = $collectedToday->sum('amount_collected'); // Sum up the colle
 //dd($collectedAmount);
 // Update outstanding balance by reducing today's collected amount
 $loan->outstanding_balance = max($orig_outstanding_balance - $collectedAmount, 0); // Prevent negative balance
+$loan->total_due = max($loan->total_due - $collectedAmount, 0);
 
 // Save the updated loan record
 $loan->save();
