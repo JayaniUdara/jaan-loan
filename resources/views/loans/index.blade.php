@@ -316,9 +316,12 @@
                 <td class="border px-4 py-2">{{ $loan->total_installments }}</td>
                 <td class="border px-4 py-2">{{ $loan->remaining_installments }}</td>
                 <td class="border px-4 py-2">
-                @if($loan->is_approved)
+                @if($loan->status == 'approved')
                         <span class="text-green-600 font-bold">Approved</span>
-                    @else
+                    @elseif($loan->status == 'settled')
+                   
+                        <span class="bg-blue-600 text-white font-bold  px-2 py-1 rounded-md">Settled</span>
+                        @elseif($loan->status == 'pending')
                         <span class="text-red-600 font-bold">Pending</span>
                         <form action="{{ route('loans.approve', $loan->id) }}" method="POST" class="mt-2">
                             @csrf

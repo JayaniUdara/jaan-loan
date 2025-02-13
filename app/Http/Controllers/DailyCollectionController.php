@@ -83,6 +83,9 @@ class DailyCollectionController extends Controller
 
 
                     $loan->total_due = $totalPendingAmount + $installmentAmount +$interest; // Add the current installment amount
+                    $currLoanOutstanding = $loan->outstanding_balance;
+                    $loan->outstanding_balance = $currLoanOutstanding +$interest; // Add the current installment amount
+
                     $loan->save();
                 }
 
@@ -130,6 +133,15 @@ $loan->save();
             ]);
     
             $this->updateLoansTotalDue();
+
+            $loanIds = DailyCollection::whereDate('collection_date', today())
+            ->pluck('loan_id')
+            ->unique();
+    
+        Loan::whereIn('id', $loanIds)
+            ->where('outstanding_balance', 0)
+            ->update(['status' => 'settled']);
+            
             return redirect()->route('daily-collections.index')->with('success', "Collections have been approved successfully.");
 
     }
