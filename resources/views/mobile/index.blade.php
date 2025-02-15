@@ -17,6 +17,12 @@
                 </div>
         <div class="mb-4 flex flex-col sm:flex-row justify-center gap-2">
             <input type="text" id="custom-search-bar" placeholder="Search records..." class="border rounded p-2 w-full sm:w-auto text-center">
+
+            <select id="status-filter" class="border rounded p-2 w-full sm:w-auto">
+                <option value="">All</option>
+                <option value="collected">Collected</option>
+                <option value="pending">Pending</option>
+            </select>
         </div>
         <div class="w-full overflow-x-auto">
             <table id="collections-table" class="table-auto w-full text-sm border-collapse">
@@ -87,6 +93,17 @@
         $('#custom-search-bar').on('keyup', function () {
             table.search(this.value).draw();
         });
+
+        $('#status-filter').on('change', function () {
+            let filterValue = this.value;
+            if (filterValue) {
+                table.column(3).search(filterValue).draw();
+            } else {
+                table.column(3).search('').draw();
+            }
+        });
     });
+
+
 </script>
 @endsection
