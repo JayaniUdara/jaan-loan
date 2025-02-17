@@ -295,6 +295,7 @@ class LoanController extends Controller
             // Update loan status
             $loan->update([
                 'loan_approved_date' => now(),
+                'status' => 'approved',
                 'is_approved' => true,
                 'approved_by' => auth()->id(),
             ]);
