@@ -335,6 +335,8 @@
                 </td>
                 <td class="border px-4 py-2 flex gap-2 justify-center">
                     <a href="{{ route('loans.view', $loan->id) }}" class="text-blue-500 hover:underline">👁 View</a>
+                    <a href="{{ route('loans.settle', $loan->id) }}" class="text-red-500 hover:underline">Settle</a>
+
                     <a href="{{ route('loans.edit', $loan->id) }}" class="text-blue-500 hover:underline">✏️ Edit</a>
                     <form action="{{ route('loans.destroy', $loan->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                         @csrf

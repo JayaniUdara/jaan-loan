@@ -246,6 +246,35 @@ class LoanController extends Controller
         $users = User::all();
         return view('loans.edit', compact('loan', 'customers','users'));
     }
+    public function settle($id)
+    {
+        try {
+            // Find the loan
+            $loan = Loan::findOrFail($id);
+    
+            // Get the current date as the settlement date
+            $settlementDate = Carbon::now();
+    
+            // Update loan details
+            $loan->update([
+                'status' => 'settled',
+                'loan_end_date' => $settlementDate,
+                'total_due' => 0,
+                'outstanding_balance' => 0,
+                'remaining_installments' => 0,
+            ]);
+    
+            // Delete future daily collections
+            DailyCollection::where('loan_id', $loan->id)
+                ->where('collection_date', '>', $settlementDate)
+                ->delete();
+    
+            return redirect()->route('loans.index')->with('success', 'Loan settled successfully. All future collection records have been deleted.');
+        } catch (\Exception $e) {
+            return redirect()->route('loans.index')->with('error', 'Failed to settle loan: ' . $e->getMessage());
+        }
+    }
+        
 
     /**
      * Update the specified loan and its guarantors.
