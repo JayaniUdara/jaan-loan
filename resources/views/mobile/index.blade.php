@@ -30,7 +30,8 @@
                     <tr>
                         <th class="border px-4 py-2">Customer</th>
                         <th class="border px-4 py-2">Loan ID</th>
-                        <th class="border px-4 py-2">Amount Due</th>
+                        <th class="border px-4 py-2">Total Due</th>
+                        <th class="border px-4 py-2">Due today</th>
                         <th class="border px-4 py-2">Status</th>
                         <th class="border px-4 py-2">Actions</th>
                     </tr>
@@ -40,6 +41,7 @@
                     <tr class="text-center">
                         <td class="border px-4 py-2 break-words">{{ $collection->customer->name }}</td>
                         <td class="border px-4 py-2 break-words">{{ $collection->loan->loan_custom_id }}</td>
+                        <td class="border px-4 py-2 break-words">{{ number_format($collection->loan->total_due, 2) }}</td>
                         <td class="border px-4 py-2 break-words">{{ number_format($collection->amount_collected, 2) }}</td>
                         <td class="border px-4 py-2 break-words">
                             <span class="{{ $collection->status === 'collected' ? 'text-green-500' : 'text-yellow-500' }}">

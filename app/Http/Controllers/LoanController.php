@@ -199,6 +199,8 @@ class LoanController extends Controller
                 $numInstallments = $validatedData['installment_duration'] === 'daily'
                 ? 60 // 60 days
                 : 8; // 8 weeks
+
+               
             // Create the loan
             $loan = Loan::create([
                 'loan_custom_id' => $validatedData['loan_custom_id'],
@@ -333,10 +335,10 @@ class LoanController extends Controller
             $total = $loan->total_installments;
             $startDate = Carbon::parse($loan->loan_approved_date)->startOfDay();
             $totalAmount = $loan->amount;
-            $dailyInterest = $totalAmount * $loan->interest_rate / 36000;
+            $dailyInterest = $totalAmount * ($loan->interest_rate/100)*2 /$loan->total_installments;
             $remainingDays = ($loan->installment_duration + 1) * $loan->total_installments;
-            $totalInterest = $dailyInterest * $remainingDays;
-            $installmentAmount =  ($totalAmount + $totalInterest)/$loan->total_installments;
+            $totalInterest = $totalAmount * $loan->interest_rate;
+            $installmentAmount =  ($totalAmount + ($totalAmount * ($loan->interest_rate/100)*2))/$loan->total_installments;
 $loanInsDuration = $loan->installment_duration;
 
 

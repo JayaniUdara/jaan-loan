@@ -64,25 +64,110 @@ class DailyCollectionController extends Controller
                 ->get();
     
             $totalPendingAmount = $pendingCollections->sum('amount_collected');
-            $installmentAmount = (($loan->amount*0.01 + $loan->amount)/($loan->total_installments));
+            $installmentAmount = ((2*($loan->amount*0.1) + $loan->amount)/($loan->total_installments));
+        
+            $installmentAmountToPay =0;
+
+  
+//settle pending lump
+
+//$installmentAmount = (($loan->amount * 0.01 + $loan->amount) / $loan->total_installments);
+
+// Get all pending collections ordered by date
+$pendingCollections = DailyCollection::where('loan_id', $loan->id)
+    ->where('status', 'pending')
+    ->orderBy('collection_date', 'asc')
+    ->get();
+
+   
+              // Add 3% interest if pending exceeds 3 installments
+              if (($totalPendingAmount > (3*$installmentAmount))) {
+                // Find the next pending collection (next installment)
+            
+                    // Calculate and add the 3% interest to the next installment's collection amount
+                    $interest = $totalPendingAmount * 0.03;
+                  $installmentAmountToPay  =$installmentAmount+ $interest; // Update the amount_collected
+             
+              
+                  //  $installmentAmountToPay = $installmentAmount+ $interest;;
+
+                
+
+
+            }else{
+         
+
+                $installmentAmountToPay  =$installmentAmount; // Update the amount_collected
+             
+            }
+
+
+
+
+// Get total collected amount (e.g., LKR 5000 from one or more payments)
+$collectedToday = DailyCollection::where('loan_id', $loan->id)
+->where('status', 'collected')
+->whereDate('updated_at', today())
+->get(); 
+
+
+$remainingCollected = $collectedToday->sum('amount_collected'); 
+
+
+
+foreach ($pendingCollections as $collection) {
+    $expectedAmount = $collection->amount_collected;
+    if ($remainingCollected >= $expectedAmount) {
+        
+
+        $collection->status = 'collected';
+        $collection->save();
+
+        $remainingCollected -= $expectedAmount;
+    } else {
+        $collection->amount_collected = $expectedAmount-$remainingCollected;
+        $collection->save();
+        $remainingCollected=0;
+        // Not enough remaining to mark the next as collected
+        break;
+    }
+}
+
+
+//dd($remainingCollected);
+
+//done settle pending lump
+// Second: allocate leftover to future installments (if any)
+if ($remainingCollected > 0) {
+    $remainingCollected -= $installmentAmountToPay;
+
+
+}
+
+
+
     
             // Add 3% interest if pending exceeds 3 installments
-            if ($totalPendingAmount > (3 * $installmentAmount)) {
+            if (($totalPendingAmount > (3 * $installmentAmount) || ($totalPendingAmount == (3 * $installmentAmount)) )) {
                 // Find the next pending collection (next installment)
                 $nextCollection = DailyCollection::where('loan_id', $loan->id)
                     ->where('status', 'pending')
                     ->whereDate('collection_date', '>', today()) // Target the next day's installment
                     ->orderBy('collection_date', 'asc') // Ensure we get the next installment
                     ->first();
+                   
+                
                     
+ 
                 if ($nextCollection) {
                     // Calculate and add the 3% interest to the next installment's collection amount
-                    $interest = $loan->total_due * 0.03;
+                    $interest = $totalPendingAmount * 0.03;
                     $nextCollection->amount_collected =$installmentAmount+ $interest; // Update the amount_collected
                     $nextCollection->save();
-
-
+                 
                     $loan->total_due = $totalPendingAmount + $installmentAmount +$interest; // Add the current installment amount
+          
+
                     $currLoanOutstanding = $loan->outstanding_balance;
                     $loan->outstanding_balance = $currLoanOutstanding +$interest; // Add the current installment amount
 
