@@ -70,6 +70,11 @@ class MobileController extends Controller
     
             // Update loan's total_due
             $loan->total_due = max(0, $loan->total_due - $collectedAmount + $remainingAmount);
+            $collectedSum = $loan->dailyCollections()
+                            ->sum('added_amount');
+            $loan->outstanding_balance = $loan->outstanding_balance - $collectedSum;
+            $collectedCount = $loan->dailyCollections()->where('status', 'collected')->count();
+            $loan->remaining_installments = $loan->total_installments - $collectedCount;
             $loan->save();
     
             return redirect()->back()->with('success', 'Collection distributed to pending records successfully!');
