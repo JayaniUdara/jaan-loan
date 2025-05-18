@@ -14,6 +14,7 @@ class DailyCollection extends Model
         'user_id',
         'customer_id',
         'amount_collected',
+        'added_amount', 
         'status',
         'notes',
         'collection_date',

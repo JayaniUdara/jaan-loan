@@ -9,7 +9,7 @@ class CreateDailyCollectionsTable extends Migration
     {
         Schema::create('daily_collections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Loan Collector
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('loan_id')->constrained()->onDelete('cascade');
             $table->decimal('amount_collected', 10, 2);
